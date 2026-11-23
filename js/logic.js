@@ -146,7 +146,7 @@ export function estadoRepro(animal, eventos) {
   let estado = 'Sin datos', partoProbable = '';
   if (A || B) {
     if (A && (!B || A.fecha > B.fecha)) {
-      estado = 'Gestante';
+      estado = 'Preñada';
       if (esFecha(A.partoProbable)) partoProbable = A.partoProbable;
       else if (S && (!B || S.fecha > B.fecha)) partoProbable = sumarDias(S.fecha, GESTACION_DIAS);
     } else estado = 'Vacía';

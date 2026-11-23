@@ -111,7 +111,7 @@ export async function formulario(tabla, rec, { alGuardar, alEliminar, alCancelar
 // ---------- pequeños componentes ----------
 export const tarjeta = (titulo, ...contenido) => h('section', { class: 'tarjeta' }, titulo ? h('h2', {}, titulo) : null, ...contenido);
 export const chip = (texto, clase = '') => h('span', { class: 'chip ' + clase }, texto);
-export const claseEstado = e => ({ Vencida: 'rojo', 'Próxima': 'ambar', 'Al día': 'verde', Gestante: 'verde', Atrasado: 'rojo', Próximo: 'ambar' }[e] || 'gris');
+export const claseEstado = e => ({ Vencida: 'rojo', 'Próxima': 'ambar', 'Al día': 'verde', Preñada: 'verde', Atrasado: 'rojo', Próximo: 'ambar' }[e] || 'gris');
 export function filaLista({ titulo, sub, derecha, subDerecha, color, onclick, imagen }) {
   return h('button', { class: 'fila', onclick, style: color ? `--c:${color}` : null },
     imagen ? h('img', { class: 'avatar', src: imagen, alt: '' }) : null,

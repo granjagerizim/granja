@@ -40,12 +40,12 @@ export async function inicio() {
         titulo: nombre(p.animal.arete), sub: `Parto probable ${L.fechaCorta(p.fecha)}`,
         derecha: chip(p.dias < 0 ? 'Atrasado' : p.dias <= 30 ? 'En ' + p.dias + ' d' : 'En ' + p.dias + ' d', p.dias < 0 ? 'rojo' : p.dias <= 30 ? 'ambar' : 'gris'),
         onclick: () => ir('/animales/' + p.animal.id) }))
-      : vacio('Sin hembras gestantes con fecha de parto.'));
+      : vacio('Sin hembras preñadas con fecha de parto.'));
 
   const hato = tarjeta('Ganado',
     h('div', { class: 'dos' },
       h('div', {}, h('div', { class: 'grande' }, activos.length), h('small', {}, 'animales activos')),
-      h('div', {}, h('div', { class: 'grande' }, activos.filter(a => L.estadoRepro(a, repro).estado === 'Gestante').length), h('small', {}, 'gestantes'))),
+      h('div', {}, h('div', { class: 'grande' }, activos.filter(a => L.estadoRepro(a, repro).estado === 'Preñada').length), h('small', {}, 'preñadas'))),
     h('button', { class: 'btn', onclick: () => ir('/animales') }, 'Ver animales'));
 
   return pagina(null, {}, modulos, lecheT, alertasT, partosT, hato);
