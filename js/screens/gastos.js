@@ -5,17 +5,22 @@ import { COLOR_SOCIO, SOCIOS } from '../config.js';
 import { h, pagina, tarjeta, filaLista, ir, vacio, fab, formulario, aviso, chip } from '../ui.js';
 
 export async function gastos() {
-  const todos = await S.todos('gastos');
+  const [todos, ing] = await Promise.all([S.todos('gastos'), S.todos('ingresos')]);
   let filtroQuien = '', busqueda = '', verCategorias = false;
   const cuerpo = h('div');
 
   const dibujar = () => {
     cuerpo.replaceChildren();
-    const b = L.balance(todos);
-    cuerpo.append(tarjeta(null,
-      h('div', { class: 'dos' },
-        h('div', {}, h('div', { class: 'grande' }, L.dinero(b.total)), h('small', {}, `${todos.length} gastos`)),
-        h('div', {}, b.deuda ? h('b', { class: 'deuda-chica' }, `${b.deuda.de} → ${b.deuda.a}`) : h('b', {}, 'A mano'), h('div', { class: 'grande' }, b.deuda ? L.dinero(b.deuda.monto) : '$0,00'))),
+    const b = L.balance(todos, ing);
+    const hayIngresos = b.totalIngresos > 0;
+    cuerpo.append(tarjeta('Inversión en la granja',
+      h('div', { class: 'grande' }, L.dinero(b.total)),
+      hayIngresos ? h('small', {}, `Gastos · Ingresos ${L.dinero(b.totalIngresos)} · Neto ${L.dinero(b.neto)}`) : null,
+      h('div', { class: 'socios' }, b.filas.map(f => h('div', { class: 'socio', style: `--c:${COLOR_SOCIO[f.socio]}` },
+        h('span', { class: 'socio-nombre' }, f.socio), h('b', {}, L.dinero(f.pagado)),
+        h('small', {}, hayIngresos ? `cobró ${L.dinero(f.cobrado)}` : (b.total ? Math.round(f.pagado / b.total * 1000) / 10 + '% del total' : ''))))),
+      b.deuda ? h('div', { class: 'deuda' }, `${b.deuda.de} le debe ${L.dinero(b.deuda.monto)} a ${b.deuda.a}`) : h('div', { class: 'deuda ok' }, 'Están a mano'),
+      b.sinSocio > 0 ? h('div', { class: 'error' }, `⚠ Hay ${L.dinero(b.sinSocio)} sin socio asignado`) : null,
       h('button', { class: 'btn', onclick: () => { verCategorias = !verCategorias; dibujar(); } }, verCategorias ? 'Ocultar categorías' : 'Ver por categoría')));
     if (verCategorias) {
       const cats = L.gastosPorCategoria(todos);
@@ -37,7 +42,7 @@ export async function gastos() {
     if (lista.length > 300) cuerpo.append(vacio(`Se muestran 300 de ${lista.length}. Usa el buscador.`));
   };
   dibujar();
-  return pagina('Gastos', {}, cuerpo, fab('Nuevo gasto', () => ir('/gastos/nuevo')));
+  return pagina('Gastos', { atras: '/mas' }, cuerpo, fab('Nuevo gasto', () => ir('/gastos/nuevo')));
 }
 
 export async function gastoForm(id) {

@@ -33,6 +33,12 @@ export const LISTAS = {
 // Categorías de gastos. El orden de CLAVES importa: gana la primera palabra que aparezca en la descripción.
 // Si ninguna coincide, el gasto queda en "Otros". (Se ignoran mayúsculas y tildes.)
 export const CATEGORIAS_GASTO = ["Compra de la granja", "Gestión y comisiones", "Mano de obra", "Maquinaria y arado", "Servicios básicos", "Construcción e infraestructura", "Siembra y cultivos", "Riego y agua", "Animales y alimento", "Herramientas y dotación", "Otros"];
+
+// Tipos de ingreso (se puede escribir uno nuevo desde el formulario con "Otro")
+// A quién pertenece un ingreso: por defecto a la sociedad (mitad y mitad); a veces es de un solo socio
+export const REPARTO_SOCIEDAD = 'Sociedad (mitad y mitad)';
+export const REPARTOS = [REPARTO_SOCIEDAD, ...SOCIOS.map(s => 'Solo ' + s)];
+export const CATEGORIAS_INGRESO = ['Venta de ganado', 'Leche', 'Queso', 'Otros derivados', 'Otros ingresos'];
 export const CLAVES = [
   ["novilla", "Animales y alimento"],
   ["novillo", "Animales y alimento"],
@@ -147,6 +153,26 @@ export const TABLAS = {
       { k: 'categoria', label: 'Categoría (solo si quieres forzarla)', tipo: 'lista', opciones: [...CATEGORIAS_GASTO], opcional: true },
       { k: 'notas', label: 'Notas', tipo: 'notas' },
     ],
+  },
+  ingresos: {
+    etiqueta: 'Ingreso', plural: 'Ingresos',
+    campos: [
+      { k: 'fecha', label: 'Fecha', tipo: 'fecha', defecto: 'hoy' },
+      { k: 'quien', label: 'Quién cobró', tipo: 'lista', opciones: SOCIOS, req: true, ayuda: 'El socio que recibió el dinero. Cuenta para saber quién le debe a quién.' },
+      { k: 'monto', label: 'Monto ($)', tipo: 'numero', req: true },
+      { k: 'reparto', label: 'A quién corresponde', tipo: 'lista', opciones: REPARTOS, defecto: REPARTO_SOCIEDAD, req: true, ayuda: 'Normalmente es de la sociedad (mitad y mitad). Elige "Solo …" si es el dinero de un solo socio.' },
+      { k: 'categoria', label: 'Tipo de ingreso', tipo: 'lista', opciones: [...CATEGORIAS_INGRESO], req: true, libre: true },
+      { k: 'descripcion', label: 'Descripción', tipo: 'texto', req: true, ayuda: 'Por ejemplo: "venta de 2 becerros" o "leche de la semana".' },
+      { k: 'animal', label: 'Animal vendido (opcional)', tipo: 'animal', visibleSi: r => r.categoria === 'Venta de ganado', ayuda: 'Si eliges uno, queda marcado como Vendido en su ficha.' },
+      { k: 'cantidad', label: 'Cantidad (opcional)', tipo: 'numero' },
+      { k: 'unidad', label: 'Unidad (opcional)', tipo: 'lista', opciones: ['litros', 'kg', 'unidades'], libre: true },
+      { k: 'comprador', label: 'Comprador (opcional)', tipo: 'texto' },
+      { k: 'notas', label: 'Notas', tipo: 'notas' },
+    ],
+  },
+  ajustes: {                      // un solo registro (id "granja") con el nombre de la granja; se comparte entre los celulares
+    etiqueta: 'Ajuste', plural: 'Ajustes',
+    campos: [{ k: 'nombre', label: 'Nombre de la granja', tipo: 'texto' }],
   },
   animales: {
     etiqueta: 'Animal', plural: 'Animales',

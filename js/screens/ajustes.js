@@ -7,7 +7,7 @@ import { h, pagina, tarjeta, aviso, ir, confirmar } from '../ui.js';
 
 export async function mas() {
   const item = (icono, texto, ruta) => h('button', { class: 'fila', onclick: () => ir(ruta) }, h('div', { class: 'fila-izq' }, h('div', { class: 'fila-titulo' }, `${icono}  ${texto}`)), h('div', { class: 'fila-der' }, '›'));
-  return pagina('Más', {}, tarjeta(null, item('🐄', 'Animales', '/animales'), item('🐮', 'Reproducción', '/reproduccion'), item('⚙️', 'Ajustes y respaldo', '/ajustes')));
+  return pagina('Más', {}, tarjeta(null, item('💵', 'Gastos', '/gastos'), item('💰', 'Ingresos', '/ingresos'), item('🐮', 'Reproducción', '/reproduccion'), item('⚙️', 'Ajustes y respaldo', '/ajustes')));
 }
 
 // Vuelve a bajar la app desde internet y la recarga. Los datos no se tocan.
@@ -54,6 +54,16 @@ export async function ajustes() {
       try { await navigator.clipboard.writeText(enlace); aviso('Enlace copiado. Envíalo por mensaje al otro celular (es privado).', 4500); } catch { window.prompt('Copia este enlace:', enlace); }
     } }, 'Copiar enlace de configuración para el otro celular'));
 
+  const actual = await S.uno('ajustes', 'granja');
+  const inNombre = h('input', { type: 'text', value: (actual && !actual.deleted && actual.nombre) || APP.nombre, maxlength: 40, autocomplete: 'off' });
+  const nombreT = tarjeta('Nombre de la granja',
+    h('small', {}, 'Aparece arriba en la app, en los dos celulares.'), inNombre,
+    h('button', { class: 'btn primario', onclick: async () => {
+      const n = inNombre.value.trim();
+      if (!n) return aviso('Escribe un nombre');
+      await S.guardar('ajustes', { id: 'granja', nombre: n }); aviso('Nombre guardado'); Y.sincronizar();
+    } }, 'Guardar nombre'));
+
   const seedT = tarjeta('Datos iniciales',
     h('small', {}, 'Carga los 153 gastos del libro de Excel y los 6 animales comprados el 19-11-2026. Hazlo una sola vez, en un solo celular.'),
     h('button', { class: 'btn', onclick: async () => {
@@ -80,5 +90,5 @@ export async function ajustes() {
     h('button', { class: 'btn', onclick: buscarActualizacion }, '🔄 Buscar actualización'),
     h('small', {}, `${APP.nombre} v${APP.version}`));
   await pintar();
-  return pagina('Ajustes', { atras: '/mas' }, conexion, seedT, respaldo, otros);
+  return pagina('Ajustes', { atras: '/mas' }, nombreT, conexion, seedT, respaldo, otros);
 }

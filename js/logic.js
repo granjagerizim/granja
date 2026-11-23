@@ -35,21 +35,44 @@ export function categoriaGasto(g) {
   for (const [p, c] of CLAVES_N) if (p && d.includes(p)) return c;
   return 'Otros';
 }
-export function balance(gastos) {
-  const gs = gastos.filter(g => !g.deleted);
+// Parte de un ingreso que le corresponde a un socio: mitad y mitad (sociedad) o todo para uno ("Solo Omar")
+export const parteIngreso = (i, socio) => {
+  const r = String(i.reparto || '');
+  return r.startsWith('Solo ') ? (r === 'Solo ' + socio ? 1 : 0) : PARTES[socio];
+};
+
+// Balance entre socios. Los gastos los pagó un socio; los ingresos los cobró un socio.
+// Cada socio aportó (lo que pagó − lo que cobró); lo justo es que cada uno aporte su parte del neto.
+export function balance(gastos, ingresos = []) {
+  const gs = gastos.filter(g => !g.deleted), is = ingresos.filter(i => !i.deleted);
   const total = gs.reduce((s, g) => s + num(g.monto), 0);
-  const pagado = Object.fromEntries(SOCIOS.map(s => [s, 0]));
+  const totalIngresos = is.reduce((s, i) => s + num(i.monto), 0);
+  const neto = total - totalIngresos;
+  const pagado = Object.fromEntries(SOCIOS.map(s => [s, 0])), cobrado = Object.fromEntries(SOCIOS.map(s => [s, 0]));
   let sinSocio = 0;
   for (const g of gs) { if (g.quien in pagado) pagado[g.quien] += num(g.monto); else sinSocio += num(g.monto); }
+  for (const i of is) { if (i.quien in cobrado) cobrado[i.quien] += num(i.monto); }
   const filas = SOCIOS.map(s => {
-    const corresponde = total * PARTES[s];
-    return { socio: s, pagado: pagado[s], corresponde, diferencia: pagado[s] - corresponde };
+    const aporte = pagado[s] - cobrado[s];
+    const corresponde = total * PARTES[s] - is.reduce((t, i) => t + num(i.monto) * parteIngreso(i, s), 0);   // su parte de los gastos menos su parte de los ingresos
+    return { socio: s, pagado: pagado[s], cobrado: cobrado[s], aporte, corresponde, diferencia: aporte - corresponde };
   });
   // quien tiene diferencia negativa le debe a quien tiene positiva (con 2 socios, es una sola deuda)
   const deudor = filas.reduce((a, b) => (b.diferencia < a.diferencia ? b : a));
   const acreedor = filas.reduce((a, b) => (b.diferencia > a.diferencia ? b : a));
   const monto = Math.abs(deudor.diferencia);
-  return { total, filas, sinSocio, deuda: monto < 0.005 ? null : { de: deudor.socio, a: acreedor.socio, monto } };
+  return { total, totalIngresos, neto, filas, sinSocio, deuda: monto < 0.005 ? null : { de: deudor.socio, a: acreedor.socio, monto } };
+}
+export function ingresosPorCategoria(ingresos) {
+  const m = new Map();
+  for (const i of ingresos) {
+    if (i.deleted) continue;
+    const c = i.categoria || 'Otros ingresos';
+    if (!m.has(c)) m.set(c, { cat: c, total: 0, n: 0, porSocio: Object.fromEntries(SOCIOS.map(s => [s, 0])) });
+    const e = m.get(c); e.total += num(i.monto); e.n++;
+    if (i.quien in e.porSocio) e.porSocio[i.quien] += num(i.monto);
+  }
+  return [...m.values()].sort((a, b) => b.total - a.total);
 }
 export function gastosPorCategoria(gastos) {
   const m = new Map(CATEGORIAS_GASTO.map(c => [c, { cat: c, total: 0, n: 0, porSocio: Object.fromEntries(SOCIOS.map(s => [s, 0])) }]));

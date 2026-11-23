@@ -8,34 +8,46 @@ import { leche, lecheForm } from './screens/leche.js';
 import { sanidad, sanidadForm } from './screens/sanidad.js';
 import { animales, animalFicha, animalForm } from './screens/animales.js';
 import { reproduccion, reproduccionForm } from './screens/reproduccion.js';
+import { ingresos, ingresoForm } from './screens/ingresos.js';
 import { fotoVista } from './screens/fotos.js';
+import { APP } from './config.js';
 import { mas, ajustes } from './screens/ajustes.js';
 
 // Cada ruta: [patrón, función(parámetros, query)] y a qué pestaña de abajo pertenece
 const RUTAS = [
   [/^\/$/, () => inicio(), 'inicio'],
-  [/^\/gastos$/, () => gastos(), 'gastos'],
-  [/^\/gastos\/([^/]+)$/, p => gastoForm(p[0]), 'gastos'],
+  [/^\/gastos$/, () => gastos(), 'mas'],
+  [/^\/gastos\/([^/]+)$/, p => gastoForm(p[0]), 'mas'],
+  [/^\/ingresos$/, () => ingresos(), 'mas'],
+  [/^\/ingresos\/([^/]+)$/, p => ingresoForm(p[0]), 'mas'],
   [/^\/leche$/, () => leche(), 'leche'],
   [/^\/leche\/([^/]+)$/, p => lecheForm(p[0]), 'leche'],
   [/^\/sanidad$/, () => sanidad(), 'sanidad'],
   [/^\/sanidad\/([^/]+)$/, (p, q) => sanidadForm(p[0], q), 'sanidad'],
-  [/^\/animales$/, () => animales(), 'mas'],
-  [/^\/animales\/nuevo$/, () => animalForm('nuevo'), 'mas'],
-  [/^\/animales\/([^/]+)\/editar$/, p => animalForm(p[0]), 'mas'],
-  [/^\/animales\/([^/]+)$/, p => animalFicha(p[0]), 'mas'],
-  [/^\/fotos\/([^/]+)$/, p => fotoVista(p[0]), 'mas'],
+  [/^\/animales$/, () => animales(), 'animales'],
+  [/^\/animales\/nuevo$/, () => animalForm('nuevo'), 'animales'],
+  [/^\/animales\/([^/]+)\/editar$/, p => animalForm(p[0]), 'animales'],
+  [/^\/animales\/([^/]+)$/, p => animalFicha(p[0]), 'animales'],
+  [/^\/fotos\/([^/]+)$/, p => fotoVista(p[0]), 'animales'],
   [/^\/reproduccion$/, () => reproduccion(), 'mas'],
   [/^\/reproduccion\/([^/]+)$/, (p, q) => reproduccionForm(p[0], q), 'mas'],
   [/^\/mas$/, () => mas(), 'mas'],
   [/^\/ajustes$/, () => ajustes(), 'mas'],
 ];
-const NAV = [['inicio', '🏠', 'Inicio', '/'], ['gastos', '💵', 'Gastos', '/gastos'], ['leche', '🥛', 'Leche', '/leche'], ['sanidad', '💉', 'Sanidad', '/sanidad'], ['mas', '☰', 'Más', '/mas']];
+const NAV = [['inicio', '🏠', 'Inicio', '/'], ['animales', '🐄', 'Animales', '/animales'], ['leche', '🥛', 'Leche', '/leche'], ['sanidad', '💉', 'Sanidad', '/sanidad'], ['mas', '☰', 'Más', '/mas']];
 
 const main = document.getElementById('main');
 const nav = document.getElementById('nav');
 const estadoEl = document.getElementById('estado');
 let versionPintada = 0;
+
+// Nombre de la granja (editable en Ajustes; se comparte entre los celulares)
+async function pintarNombre() {
+  let nombre = APP.nombre;
+  try { const a = await S.uno('ajustes', 'granja'); if (a && !a.deleted && a.nombre) nombre = a.nombre; } catch { /* usa el nombre por defecto */ }
+  document.querySelector('.marca').textContent = '🐄 ' + nombre;
+  document.title = nombre;
+}
 
 async function configDesdeEnlace(query) {
   if (!query.cfg) return false;
@@ -84,11 +96,13 @@ estadoEl.addEventListener('click', () => { if (!Y.estado.configurado) ir('/ajust
 // Cuando cambian los datos (por mí o por la sincronización), se refresca la pantalla si es una lista/resumen (no un formulario)
 let t = null;
 S.alCambiar(() => {
+  pintarNombre();
   if (document.querySelector('form, .tabla-ordeno input:focus')) return;       // no interrumpir mientras se escribe
   clearTimeout(t); t = setTimeout(dibujar, 300);
 });
 
 await Y.refrescarPendientes();
+await pintarNombre();
 await dibujar();
 Y.iniciarAutoSync();
 

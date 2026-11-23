@@ -7,7 +7,7 @@ const ARCHIVOS = [
   './', './index.html', './manifest.webmanifest', './css/app.css', './seed.json',
   './js/app.js', './js/config.js', './js/logic.js', './js/store.js', './js/sync.js', './js/ui.js', './js/fotos.js',
   './js/screens/inicio.js', './js/screens/gastos.js', './js/screens/leche.js', './js/screens/sanidad.js',
-  './js/screens/animales.js', './js/screens/reproduccion.js', './js/screens/ajustes.js', './js/screens/fotos.js',
+  './js/screens/animales.js', './js/screens/reproduccion.js', './js/screens/ajustes.js', './js/screens/fotos.js', './js/screens/ingresos.js',
   './icons/icon-192.png', './icons/icon-512.png',
 ];
 

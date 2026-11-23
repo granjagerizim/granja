@@ -1,30 +1,21 @@
 // Pantalla de inicio: balance entre socios, leche, alertas sanitarias, próximos partos.
 import * as S from '../store.js';
 import * as L from '../logic.js';
-import { SOCIOS, COLOR_SOCIO, AVISO_SANIDAD_DIAS } from '../config.js';
+import { AVISO_SANIDAD_DIAS } from '../config.js';
 import { h, pagina, tarjeta, chip, claseEstado, filaLista, ir, vacio } from '../ui.js';
 
 export async function inicio() {
-  const [gastos, animales, leche, sanidad, repro] = await Promise.all(['gastos', 'animales', 'leche', 'sanidad', 'reproduccion'].map(t => S.todos(t)));
-  const b = L.balance(gastos);
+  const [animales, leche, sanidad, repro] = await Promise.all(['animales', 'leche', 'sanidad', 'reproduccion'].map(t => S.todos(t)));
   const lr = L.resumenLeche(leche);
   const alertas = L.alertasSanidad(L.estadosSanidad(sanidad, animales));
   const partos = L.proximosPartos(animales, repro);
   const activos = animales.filter(L.activo);
   const nombre = a => L.etiquetaAnimal(a, animales);
 
-  const atajos = h('div', { class: 'atajos' },
-    h('button', { class: 'btn primario', onclick: () => ir('/gastos/nuevo') }, '💵 Gasto'),
-    h('button', { class: 'btn primario', onclick: () => ir('/leche') }, '🥛 Ordeño'),
-    h('button', { class: 'btn primario', onclick: () => ir('/sanidad/nuevo') }, '💉 Sanidad'));
-
-  const dinero = tarjeta('Inversión en la granja',
-    h('div', { class: 'grande' }, L.dinero(b.total)),
-    h('div', { class: 'socios' }, b.filas.map(f => h('div', { class: 'socio', style: `--c:${COLOR_SOCIO[f.socio]}` },
-      h('span', { class: 'socio-nombre' }, f.socio), h('b', {}, L.dinero(f.pagado)),
-      h('small', {}, b.total ? Math.round(f.pagado / b.total * 1000) / 10 + '% del total' : '')))),
-    b.deuda ? h('div', { class: 'deuda' }, `${b.deuda.de} le debe ${L.dinero(b.deuda.monto)} a ${b.deuda.a}`) : h('div', { class: 'deuda ok' }, 'Están a mano'),
-    b.sinSocio > 0 ? h('div', { class: 'error' }, `⚠ Hay ${L.dinero(b.sinSocio)} sin socio asignado`) : null);
+  const modulo = (icono, texto, ruta) => h('button', { class: 'modulo', onclick: () => ir(ruta) }, h('span', { class: 'modulo-ico' }, icono), h('span', {}, texto));
+  const modulos = h('div', { class: 'modulos' },
+    modulo('💵', 'Gastos', '/gastos'), modulo('💰', 'Ingresos', '/ingresos'), modulo('🥛', 'Leche', '/leche'),
+    modulo('💉', 'Sanidad', '/sanidad'), modulo('🐄', 'Animales', '/animales'), modulo('🐮', 'Reproducción', '/reproduccion'));
 
   const lecheT = tarjeta('Leche',
     lr.ultimoDia
@@ -51,11 +42,11 @@ export async function inicio() {
         onclick: () => ir('/animales/' + p.animal.id) }))
       : vacio('Sin hembras gestantes con fecha de parto.'));
 
-  const hato = tarjeta('Hato',
+  const hato = tarjeta('Ganado',
     h('div', { class: 'dos' },
       h('div', {}, h('div', { class: 'grande' }, activos.length), h('small', {}, 'animales activos')),
       h('div', {}, h('div', { class: 'grande' }, activos.filter(a => L.estadoRepro(a, repro).estado === 'Gestante').length), h('small', {}, 'gestantes'))),
     h('button', { class: 'btn', onclick: () => ir('/animales') }, 'Ver animales'));
 
-  return pagina(null, {}, atajos, dinero, lecheT, alertasT, partosT, hato);
+  return pagina(null, {}, modulos, lecheT, alertasT, partosT, hato);
 }
