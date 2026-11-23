@@ -1,0 +1,1184 @@
+{
+ "gastos": [
+  {
+   "id": "g001",
+   "fecha": "2026-01-09",
+   "quien": "Omar",
+   "monto": 500,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g002",
+   "fecha": "2026-02-10",
+   "quien": "Omar",
+   "monto": 10,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g003",
+   "fecha": "2026-02-10",
+   "quien": "Omar",
+   "monto": 990,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g004",
+   "fecha": "2026-02-10",
+   "quien": "Omar",
+   "monto": 1354.4,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g005",
+   "fecha": "2026-02-11",
+   "quien": "Omar",
+   "monto": 2000,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g006",
+   "fecha": "2026-02-11",
+   "quien": "Omar",
+   "monto": 1500,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g007",
+   "fecha": "2026-02-11",
+   "quien": "Omar",
+   "monto": 2200,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g008",
+   "fecha": "2026-02-11",
+   "quien": "Omar",
+   "monto": 3500,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g009",
+   "fecha": "2026-02-12",
+   "quien": "Omar",
+   "monto": 5000,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g010",
+   "fecha": "2026-02-13",
+   "quien": "Omar",
+   "monto": 3900,
+   "descripcion": "Compra Granja"
+  },
+  {
+   "id": "g011",
+   "fecha": "2026-09-10",
+   "quien": "Omar",
+   "monto": 43,
+   "descripcion": "43 $ compra de protectores de voltaje"
+  },
+  {
+   "id": "g012",
+   "fecha": "2026-09-10",
+   "quien": "Omar",
+   "monto": 285,
+   "descripcion": "285$ un rollo de manguera de 2\""
+  },
+  {
+   "id": "g013",
+   "fecha": "2026-09-29",
+   "quien": "Omar",
+   "monto": 270,
+   "descripcion": "270$ 9 horas de máquina para arar un potrero"
+  },
+  {
+   "id": "g014",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 3045.6,
+   "descripcion": "Compra Granja - Aporte inicial Kirwuin"
+  },
+  {
+   "id": "g015",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 6000,
+   "descripcion": "Compra Granja - Aporte inicial Kirwuin"
+  },
+  {
+   "id": "g016",
+   "fecha": "2026-02-13",
+   "quien": "Kirwuin",
+   "monto": 100,
+   "descripcion": "Se le pagaron 100$ a Jean por llevar el efectivo a Maracaibo"
+  },
+  {
+   "id": "g017",
+   "fecha": "2026-03-04",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "Kirwuin le dio 50$ al amigo que lo acompañó a ver las granjas"
+  },
+  {
+   "id": "g018",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 100,
+   "descripcion": "Se dieron 100$ de colaboración al Sr. que pasó el dato de la granja"
+  },
+  {
+   "id": "g019",
+   "fecha": "2026-03-11",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "Se compró una guaya en 70$"
+  },
+  {
+   "id": "g020",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 25,
+   "descripcion": "25$ trabajador"
+  },
+  {
+   "id": "g021",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ Willo"
+  },
+  {
+   "id": "g022",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 59,
+   "descripcion": "59$ heramientas y carretilla"
+  },
+  {
+   "id": "g023",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 100,
+   "descripcion": "100$ Maquinita para soldar"
+  },
+  {
+   "id": "g024",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 12,
+   "descripcion": "12$ 1 cemento"
+  },
+  {
+   "id": "g025",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ revisión maguera"
+  },
+  {
+   "id": "g026",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ trabajador"
+  },
+  {
+   "id": "g027",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ comprita"
+  },
+  {
+   "id": "g028",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 54,
+   "descripcion": "54$ conexiones manguera para la casa"
+  },
+  {
+   "id": "g029",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 25,
+   "descripcion": "25$ reparar manguera"
+  },
+  {
+   "id": "g030",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g031",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 31,
+   "descripcion": "31$ cajera, brekers, cadenas"
+  },
+  {
+   "id": "g032",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ trabajador"
+  },
+  {
+   "id": "g033",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g034",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 100,
+   "descripcion": "100$ poner la luz postes y guayas"
+  },
+  {
+   "id": "g035",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 37,
+   "descripcion": "37$ 4 metros de manguera 4pulgadas y lima"
+  },
+  {
+   "id": "g036",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 37,
+   "descripcion": "37$ tapón, pega, tubo 3/4, 2 metros de tubo 4 pulgadas"
+  },
+  {
+   "id": "g037",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 1045,
+   "descripcion": "1045$ mangueras y conexiones"
+  },
+  {
+   "id": "g038",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 240,
+   "descripcion": "240$ maquina jaguey 1er dia 6horas"
+  },
+  {
+   "id": "g039",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 240,
+   "descripcion": "240$ maquina jaguey 2dodia 6 horas"
+  },
+  {
+   "id": "g040",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 80,
+   "descripcion": "80$ maquina jaguey 3er día 2 horas"
+  },
+  {
+   "id": "g041",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 570,
+   "descripcion": "570$ bomba de 5.5 Hp para riego"
+  },
+  {
+   "id": "g042",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 215,
+   "descripcion": "215$ arenas y flete"
+  },
+  {
+   "id": "g043",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ willo"
+  },
+  {
+   "id": "g044",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ trabajador"
+  },
+  {
+   "id": "g045",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 800,
+   "descripcion": "800$ tramites del INTI (400) los debo yo",
+   "notas": "Verificar: el monto es 800$ pero la descripción dice \"(400) los debo yo\". Se contó completo como pagado por Kirwuin."
+  },
+  {
+   "id": "g046",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 200,
+   "descripcion": "200$ yessi"
+  },
+  {
+   "id": "g047",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 600,
+   "descripcion": "600$ albañiles"
+  },
+  {
+   "id": "g048",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 180,
+   "descripcion": "180$ 6 horas de arado"
+  },
+  {
+   "id": "g049",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 222,
+   "descripcion": "222$ 50 matas de coco 20 de aguacate 10 naranja 10 guanabana y 10 limon"
+  },
+  {
+   "id": "g050",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ trabajador"
+  },
+  {
+   "id": "g051",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g052",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 220,
+   "descripcion": "220$ 12 cementos, 1 rollo de manguera verde 3/4"
+  },
+  {
+   "id": "g053",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 105,
+   "descripcion": "105$ materiales (cemento, pego, colá, bloques)"
+  },
+  {
+   "id": "g054",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ trabajador"
+  },
+  {
+   "id": "g055",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ una comprita"
+  },
+  {
+   "id": "g056",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g057",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ pescados 1000 cachamas 500 bocachico"
+  },
+  {
+   "id": "g058",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 100,
+   "descripcion": "100$ 3.5 horas para sembrar la semilla"
+  },
+  {
+   "id": "g059",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 75,
+   "descripcion": "75$ cemento, cercha, pegos, cola"
+  },
+  {
+   "id": "g060",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 270,
+   "descripcion": "270$ 40k semilla de paja + 10k de maiz"
+  },
+  {
+   "id": "g061",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 100,
+   "descripcion": "100$ 3.5 horas de arado el otro lado de la casa"
+  },
+  {
+   "id": "g062",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ saco de alimento"
+  },
+  {
+   "id": "g063",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$herramienta de hacer rosca"
+  },
+  {
+   "id": "g064",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 175,
+   "descripcion": "175$ cable #14,12,10 1galon de pintura"
+  },
+  {
+   "id": "g065",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 65,
+   "descripcion": "50$ trabajador +15 comida"
+  },
+  {
+   "id": "g066",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g067",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 40,
+   "descripcion": "40$ 1 hora de maquina para el jaguey"
+  },
+  {
+   "id": "g068",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 25,
+   "descripcion": "25$ lamparas y bombillos"
+  },
+  {
+   "id": "g069",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 375,
+   "descripcion": "375$ 2 manguera 2 gallitos , conexiones pa la bomba"
+  },
+  {
+   "id": "g070",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 59,
+   "descripcion": "59$ platera, lámparas, bombillos, sostenes y banquitos"
+  },
+  {
+   "id": "g071",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "50$ trabajador +20$ comida"
+  },
+  {
+   "id": "g072",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30 willo"
+  },
+  {
+   "id": "g073",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 23,
+   "descripcion": "23$ brekes uniones"
+  },
+  {
+   "id": "g074",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 105,
+   "descripcion": "105$ 1manguera conexiones llave y gallito"
+  },
+  {
+   "id": "g075",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 75,
+   "descripcion": "75$ neverita"
+  },
+  {
+   "id": "g076",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 115,
+   "descripcion": "115$ 1 manguera conexiones llave gallitos y tasas"
+  },
+  {
+   "id": "g077",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 102,
+   "descripcion": "102$ 1manguera conexiones llave y gallito"
+  },
+  {
+   "id": "g078",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 105,
+   "descripcion": "105$ 1manguera conexión llave y gallito"
+  },
+  {
+   "id": "g079",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 138,
+   "descripcion": "138$ reja protección de la bomba"
+  },
+  {
+   "id": "g080",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ 10 orcones para en Ramada y galpon"
+  },
+  {
+   "id": "g081",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g082",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trsbajador"
+  },
+  {
+   "id": "g083",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g084",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 195,
+   "descripcion": "195$ 6.5 horas de maquina"
+  },
+  {
+   "id": "g085",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g086",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 40,
+   "descripcion": "40$ willo"
+  },
+  {
+   "id": "g087",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g088",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ obrero para hacer una zanja pa enterrar dos rollos de manguera"
+  },
+  {
+   "id": "g089",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 400,
+   "descripcion": "400$ 2 rollos de 2\" 5 uniones de 2\""
+  },
+  {
+   "id": "g090",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 60,
+   "descripcion": "60$ willo"
+  },
+  {
+   "id": "g091",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 28,
+   "descripcion": "28$ alimento pescao"
+  },
+  {
+   "id": "g092",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 138,
+   "descripcion": "138$ 50 abrazaderas, 15 gallitos 15 anillos"
+  },
+  {
+   "id": "g093",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 197,
+   "descripcion": "197$ 30 gallitos 30 abrazaderas 1 martillo 1 tenaza"
+  },
+  {
+   "id": "g094",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 574,
+   "descripcion": "574$ 5 Rollos de 1\" 15 tubos 3/4 y conecciones"
+  },
+  {
+   "id": "g095",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g096",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g097",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 146,
+   "descripcion": "146$ 17 gallitos, 1 rollo de 1\" conecciones"
+  },
+  {
+   "id": "g098",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 131,
+   "descripcion": "131$ tubos 3/4, 15 abrazaderas"
+  },
+  {
+   "id": "g099",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 373,
+   "descripcion": "373$ 4 rollos de 1\" llaves y conexiones"
+  },
+  {
+   "id": "g100",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g101",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g102",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ ayudante"
+  },
+  {
+   "id": "g103",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 195,
+   "descripcion": "195$ 8 tubos de 1/2 30 abrazaderas 1Tde 2\"  1 tapó de dos, 30 anillos, 5 abrazaderas de 2\""
+  },
+  {
+   "id": "g104",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g105",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 167,
+   "descripcion": "167$ láminas tubos pintura para hacer corral de pollo"
+  },
+  {
+   "id": "g106",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 19,
+   "descripcion": "19$ ganchos, alambre, metro"
+  },
+  {
+   "id": "g107",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g108",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ dos barretones"
+  },
+  {
+   "id": "g109",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 5,
+   "descripcion": "5$ pa arreglar la luz"
+  },
+  {
+   "id": "g110",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g111",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ llave para toma"
+  },
+  {
+   "id": "g112",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 240,
+   "descripcion": "240$ 8 horas de arado."
+  },
+  {
+   "id": "g113",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g114",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ veneno tordon"
+  },
+  {
+   "id": "g115",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g116",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30 $ alimento pescao"
+  },
+  {
+   "id": "g117",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 20,
+   "descripcion": "20$ lona para el galpon"
+  },
+  {
+   "id": "g118",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 12,
+   "descripcion": "12$ fumigar potrero"
+  },
+  {
+   "id": "g119",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 11,
+   "descripcion": "11$ dos conectores 2\""
+  },
+  {
+   "id": "g120",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 11,
+   "descripcion": "11$ pala y lima"
+  },
+  {
+   "id": "g121",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ pote de 30 litros con roca pa latrioa de los pescao"
+  },
+  {
+   "id": "g122",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 365,
+   "descripcion": "365$ 6 tubos para pozo, 16 gallitos, unas conecciones"
+  },
+  {
+   "id": "g123",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g124",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 50,
+   "descripcion": "50$ palos para los gallitos"
+  },
+  {
+   "id": "g125",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 5,
+   "descripcion": "5$ tripas para pescaos"
+  },
+  {
+   "id": "g126",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 3,
+   "descripcion": "3$ pa arreglar la luz"
+  },
+  {
+   "id": "g127",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ pa ubicar el agua"
+  },
+  {
+   "id": "g128",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ willo"
+  },
+  {
+   "id": "g129",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g130",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g131",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ saco de alimento"
+  },
+  {
+   "id": "g132",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 12,
+   "descripcion": "12$ tripa pa los pescaos"
+  },
+  {
+   "id": "g133",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g134",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g135",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 300,
+   "descripcion": "300 $ pozero"
+  },
+  {
+   "id": "g136",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ tripa pa pescao"
+  },
+  {
+   "id": "g137",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g138",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ tripa"
+  },
+  {
+   "id": "g139",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ Carlos arreglar la luz"
+  },
+  {
+   "id": "g140",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ tripa"
+  },
+  {
+   "id": "g141",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 30,
+   "descripcion": "30$ pilosombra"
+  },
+  {
+   "id": "g142",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabjador"
+  },
+  {
+   "id": "g143",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ tripa"
+  },
+  {
+   "id": "g144",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabjador"
+  },
+  {
+   "id": "g145",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ llave para toma"
+  },
+  {
+   "id": "g146",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 300,
+   "descripcion": "300$ la toma"
+  },
+  {
+   "id": "g147",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 16,
+   "descripcion": "16$ anillos para bombona"
+  },
+  {
+   "id": "g148",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 20,
+   "descripcion": "20$ bombona"
+  },
+  {
+   "id": "g149",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 20,
+   "descripcion": "20 soldar los anillos"
+  },
+  {
+   "id": "g150",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 70,
+   "descripcion": "70$ trabajador"
+  },
+  {
+   "id": "g151",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 26,
+   "descripcion": "26 $ conexiones pa la bombona"
+  },
+  {
+   "id": "g152",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 15,
+   "descripcion": "15$ sembrador de 20 calles de paja"
+  },
+  {
+   "id": "g153",
+   "fecha": "",
+   "quien": "Kirwuin",
+   "monto": 10,
+   "descripcion": "10$ tripa de pescao"
+  },
+  {
+   "id": "g154",
+   "fecha": "2026-11-19",
+   "quien": "Omar",
+   "monto": 1623.75,
+   "descripcion": "Mitad de la compra de 4 novillas y 1 novillo a Beto Rubio",
+   "notas": "Compra a Beto Rubio el 19-11-2026: Paola 615, Beba 572.5, Achote 510, Carlina 775, Toro 775 (total 3247.5, pagado mitad y mitad). Martina no se incluye: la pagó Elisa Villalobos."
+  },
+  {
+   "id": "g155",
+   "fecha": "2026-11-19",
+   "quien": "Kirwuin",
+   "monto": 1623.75,
+   "descripcion": "Mitad de la compra de 4 novillas y 1 novillo a Beto Rubio",
+   "notas": "Compra a Beto Rubio el 19-11-2026: Paola 615, Beba 572.5, Achote 510, Carlina 775, Toro 775 (total 3247.5, pagado mitad y mitad). Martina no se incluye: la pagó Elisa Villalobos."
+  }
+ ],
+ "animales": [
+  {
+   "id": "a_1",
+   "arete": "1",
+   "categoria": "Novilla",
+   "sexo": "Hembra",
+   "origen": "Comprado",
+   "estado": "Activo",
+   "fechaCompra": "2026-11-19",
+   "fechaIngreso": "2026-11-19",
+   "vendedor": "Beto Rubio",
+   "peso": 219,
+   "precio": 547.5,
+   "propietario": "Elisa Villalobos",
+   "nombre": "Martina"
+  },
+  {
+   "id": "a_2",
+   "arete": "2",
+   "categoria": "Novilla",
+   "sexo": "Hembra",
+   "origen": "Comprado",
+   "estado": "Activo",
+   "fechaCompra": "2026-11-19",
+   "fechaIngreso": "2026-11-19",
+   "vendedor": "Beto Rubio",
+   "peso": 246,
+   "precio": 615,
+   "propietario": "Sociedad Omar y Kirwuin",
+   "nombre": "Paola"
+  },
+  {
+   "id": "a_3",
+   "arete": "3",
+   "categoria": "Novilla",
+   "sexo": "Hembra",
+   "origen": "Comprado",
+   "estado": "Activo",
+   "fechaCompra": "2026-11-19",
+   "fechaIngreso": "2026-11-19",
+   "vendedor": "Beto Rubio",
+   "peso": 229,
+   "precio": 572.5,
+   "propietario": "Sociedad Omar y Kirwuin",
+   "nombre": "Beba"
+  },
+  {
+   "id": "a_4",
+   "arete": "4",
+   "categoria": "Novilla",
+   "sexo": "Hembra",
+   "origen": "Comprado",
+   "estado": "Activo",
+   "fechaCompra": "2026-11-19",
+   "fechaIngreso": "2026-11-19",
+   "vendedor": "Beto Rubio",
+   "peso": 204,
+   "precio": 510,
+   "propietario": "Sociedad Omar y Kirwuin",
+   "nombre": "Achote"
+  },
+  {
+   "id": "a_5",
+   "arete": "5",
+   "categoria": "Novilla",
+   "sexo": "Hembra",
+   "origen": "Comprado",
+   "estado": "Activo",
+   "fechaCompra": "2026-11-19",
+   "fechaIngreso": "2026-11-19",
+   "vendedor": "Beto Rubio",
+   "peso": 310,
+   "precio": 775,
+   "propietario": "Sociedad Omar y Kirwuin",
+   "nombre": "Carlina"
+  },
+  {
+   "id": "a_6",
+   "arete": "6",
+   "categoria": "Novillo",
+   "sexo": "Macho",
+   "origen": "Comprado",
+   "estado": "Activo",
+   "fechaCompra": "2026-11-19",
+   "fechaIngreso": "2026-11-19",
+   "vendedor": "Beto Rubio",
+   "peso": 310,
+   "precio": 775,
+   "propietario": "Sociedad Omar y Kirwuin",
+   "nombre": "Toro"
+  }
+ ]
+}

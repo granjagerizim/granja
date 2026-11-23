@@ -1,0 +1,95 @@
+// Arranque de la app: navegación por rutas (#/gastos, #/leche…), barra de estado de sincronización, service worker.
+import * as S from './store.js';
+import * as Y from './sync.js';
+import { h, aviso, ir } from './ui.js';
+import { inicio } from './screens/inicio.js';
+import { gastos, gastoForm } from './screens/gastos.js';
+import { leche, lecheForm } from './screens/leche.js';
+import { sanidad, sanidadForm } from './screens/sanidad.js';
+import { animales, animalFicha, animalForm } from './screens/animales.js';
+import { reproduccion, reproduccionForm } from './screens/reproduccion.js';
+import { fotoVista } from './screens/fotos.js';
+import { mas, ajustes } from './screens/ajustes.js';
+
+// Cada ruta: [patrón, función(parámetros, query)] y a qué pestaña de abajo pertenece
+const RUTAS = [
+  [/^\/$/, () => inicio(), 'inicio'],
+  [/^\/gastos$/, () => gastos(), 'gastos'],
+  [/^\/gastos\/([^/]+)$/, p => gastoForm(p[0]), 'gastos'],
+  [/^\/leche$/, () => leche(), 'leche'],
+  [/^\/leche\/([^/]+)$/, p => lecheForm(p[0]), 'leche'],
+  [/^\/sanidad$/, () => sanidad(), 'sanidad'],
+  [/^\/sanidad\/([^/]+)$/, (p, q) => sanidadForm(p[0], q), 'sanidad'],
+  [/^\/animales$/, () => animales(), 'mas'],
+  [/^\/animales\/nuevo$/, () => animalForm('nuevo'), 'mas'],
+  [/^\/animales\/([^/]+)\/editar$/, p => animalForm(p[0]), 'mas'],
+  [/^\/animales\/([^/]+)$/, p => animalFicha(p[0]), 'mas'],
+  [/^\/fotos\/([^/]+)$/, p => fotoVista(p[0]), 'mas'],
+  [/^\/reproduccion$/, () => reproduccion(), 'mas'],
+  [/^\/reproduccion\/([^/]+)$/, (p, q) => reproduccionForm(p[0], q), 'mas'],
+  [/^\/mas$/, () => mas(), 'mas'],
+  [/^\/ajustes$/, () => ajustes(), 'mas'],
+];
+const NAV = [['inicio', '🏠', 'Inicio', '/'], ['gastos', '💵', 'Gastos', '/gastos'], ['leche', '🥛', 'Leche', '/leche'], ['sanidad', '💉', 'Sanidad', '/sanidad'], ['mas', '☰', 'Más', '/mas']];
+
+const main = document.getElementById('main');
+const nav = document.getElementById('nav');
+const estadoEl = document.getElementById('estado');
+let versionPintada = 0;
+
+async function configDesdeEnlace(query) {
+  if (!query.cfg) return false;
+  try {
+    const { url, clave } = JSON.parse(decodeURIComponent(atob(query.cfg)));
+    await S.setMeta('url', url); await S.setMeta('clave', clave); await S.setMeta('desde', 0);
+    aviso('Configuración recibida. Sincronizando…', 3500); Y.sincronizar();
+  } catch { aviso('El enlace de configuración no es válido', 4000); }
+  return true;
+}
+
+async function dibujar() {
+  const crudo = location.hash.replace(/^#/, '') || '/';
+  const [ruta, qs = ''] = crudo.split('?');
+  const query = Object.fromEntries(new URLSearchParams(qs));
+  if (await configDesdeEnlace(query)) { history.replaceState(null, '', '#/ajustes'); }
+  const r = RUTAS.find(([re]) => re.test(ruta === '' ? '/' : ruta)) || RUTAS[0];
+  const params = (r[0].exec(ruta || '/') || []).slice(1).map(decodeURIComponent);
+  const mi = ++versionPintada;
+  try {
+    const vista = await r[1](params, query);
+    if (mi !== versionPintada) return;                       // el usuario ya navegó a otra pantalla
+    main.replaceChildren(vista); window.scrollTo(0, 0);
+  } catch (e) {
+    console.error(e);
+    main.replaceChildren(h('div', { class: 'pagina' }, h('div', { class: 'error' }, 'Ocurrió un error al abrir esta pantalla: ' + e.message), h('button', { class: 'btn', onclick: () => ir('/') }, 'Ir al inicio')));
+  }
+  nav.querySelectorAll('button').forEach(b => b.classList.toggle('activo', b.dataset.k === r[2]));
+}
+
+nav.append(...NAV.map(([k, ico, txt, ruta]) => h('button', { 'data-k': k, onclick: () => ir(ruta) }, h('span', { class: 'nav-ico' }, ico), h('span', {}, txt))));
+addEventListener('hashchange', dibujar);
+
+// Estado de sincronización (arriba a la derecha)
+Y.alEstado(e => {
+  let t, c = 'gris';
+  if (!e.configurado) { t = 'Configurar'; c = 'ambar'; }
+  else if (e.sincronizando) { t = 'Sincronizando…'; }
+  else if (e.error) { t = `⚠ ${e.error}${e.pendientes ? ` · ${e.pendientes} pend.` : ''}`; c = 'rojo'; }
+  else if (e.pendientes) { t = `${e.pendientes} pendiente${e.pendientes > 1 ? 's' : ''}`; c = 'ambar'; }
+  else { t = '✓ Sincronizado'; c = 'verde'; }
+  estadoEl.textContent = t; estadoEl.className = 'estado chip ' + c;
+});
+estadoEl.addEventListener('click', () => { if (!Y.estado.configurado) ir('/ajustes'); else { aviso('Sincronizando…'); Y.sincronizar(); } });
+
+// Cuando cambian los datos (por mí o por la sincronización), se refresca la pantalla si es una lista/resumen (no un formulario)
+let t = null;
+S.alCambiar(() => {
+  if (document.querySelector('form, .tabla-ordeno input:focus')) return;       // no interrumpir mientras se escribe
+  clearTimeout(t); t = setTimeout(dibujar, 300);
+});
+
+await Y.refrescarPendientes();
+await dibujar();
+Y.iniciarAutoSync();
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW', e));
