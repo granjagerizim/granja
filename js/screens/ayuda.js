@@ -34,6 +34,7 @@ const TEMAS = [
   ['💉 Salud', [
     ['Pestaña Salud, botón +. Puedes vacunar o desparasitar a varios animales a la vez.',
      'Cada aplicación pregunta "¿Se repite?". Si eliges "Sí, se repite", escribe cada cuántos días (ej. 180): debajo verás la próxima fecha y si quedará Al día, Próxima o Vencida. Los días se cuentan desde la fecha de aplicación.',
+     'Si se repite pero aún no sabes cada cuánto, deja los días vacíos: se guarda y queda en "Por completar" hasta que los indiques.',
      'Si eliges "No, es único" (un tratamiento puntual, una revisión), no genera aviso ni aparece como pendiente.',
      `Una vacuna pasa a "Próxima" (ámbar) cuando faltan ${AVISO_SANIDAD_DIAS} días o menos, y a "Vencida" (rojo) si ya pasó la fecha.`,
      'El número rojo sobre la pestaña Salud suma las vencidas y próximas. También aparecen en Inicio.',

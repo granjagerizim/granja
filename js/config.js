@@ -6,7 +6,7 @@
 // ============================================================================
 
 export const REPITE = { si: 'Sí, se repite', no: 'No, es único' };   // respuesta a "¿Se repite?" en Sanidad
-export const APP = { nombre: 'Granja', version: '1.7.2' };
+export const APP = { nombre: 'Granja', version: '1.8.0' };
 
 // Socios y reparto de gastos (deben sumar 1). Los nombres deben coincidir con los de la hoja.
 export const SOCIOS = ['Omar', 'Kirwuin'];
@@ -332,7 +332,7 @@ export const TABLAS = {
       { k: 'aplico', label: 'Aplicó / veterinario', tipo: 'texto' },
       { k: 'costo', label: 'Costo ($) (informativo)', tipo: 'numero' },
       { k: 'repite', label: '¿Se repite?', tipo: 'lista', opciones: [REPITE.si, REPITE.no], req: true, ayuda: 'Las vacunas y desparasitaciones suelen repetirse; un tratamiento o una revisión puntual, no.' },
-      { k: 'repetirDias', label: 'Repetir en (días)', tipo: 'numero', req: true, visibleSi: r => r.repite === REPITE.si, ayuda: 'La app calcula la próxima fecha y avisa.' },
+      { k: 'repetirDias', label: 'Repetir en (días)', tipo: 'numero', visibleSi: r => r.repite === REPITE.si, ayuda: 'La app calcula la próxima fecha y avisa. Si aún no lo sabes, déjalo vacío: el registro se guarda en "Por completar" hasta que lo indiques.' },
       { k: 'notas', label: 'Notas', tipo: 'notas' },
     ],
   },

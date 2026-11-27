@@ -133,6 +133,7 @@ export async function sanidadForm(id, query = {}) {
       : (rec && !rec.repite && Number(rec.repetirDias) > 0 ? { repite: REPITE.si } : {}),   // registros antiguos con días de repetición
     vistaPrevia: { repetirDias: r => {
       const n = Number(String(r.repetirDias).replace(',', '.'));
+      if (r.repite === REPITE.si && !(n > 0)) return { texto: 'Sin días todavía: se guardará en "Por completar" hasta que los indiques.', clase: 'gris' };
       if (!L.esFecha(r.fecha) || !(n > 0)) return null;
       const prox = L.sumarDias(r.fecha, n), d = L.diasEntre(L.hoy(), prox);
       const estado = d < 0 ? 'Vencida' : d <= AVISO_SANIDAD_DIAS ? 'Próxima' : 'Al día';
