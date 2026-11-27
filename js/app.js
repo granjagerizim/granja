@@ -12,6 +12,8 @@ import { ingresos, ingresoForm } from './screens/ingresos.js';
 import { fotoVista } from './screens/fotos.js';
 import { APP } from './config.js';
 import { mas, ajustes } from './screens/ajustes.js';
+import { ayuda } from './screens/ayuda.js';
+import * as L from './logic.js';
 
 // Cada ruta: [patrón, función(parámetros, query)] y a qué pestaña de abajo pertenece
 const RUTAS = [
@@ -33,6 +35,7 @@ const RUTAS = [
   [/^\/reproduccion\/([^/]+)$/, (p, q) => reproduccionForm(p[0], q), 'mas'],
   [/^\/mas$/, () => mas(), 'mas'],
   [/^\/ajustes$/, () => ajustes(), 'mas'],
+  [/^\/ayuda$/, () => ayuda(), 'mas'],
 ];
 const NAV = [['inicio', '🏠', 'Inicio', '/'], ['animales', '🐄', 'Animales', '/animales'], ['leche', '🥛', 'Leche', '/leche'], ['sanidad', '💉', 'Sanidad', '/sanidad'], ['mas', '☰', 'Más', '/mas']];
 
@@ -47,6 +50,19 @@ async function pintarNombre() {
   try { const a = await S.uno('ajustes', 'granja'); if (a && !a.deleted && a.nombre) nombre = a.nombre; } catch { /* usa el nombre por defecto */ }
   document.querySelector('.marca').textContent = '🐄 ' + nombre;
   document.title = nombre;
+}
+
+// Número rojo en la pestaña Sanidad: vacunas vencidas o próximas
+async function pintarInsignia() {
+  try {
+    const [san, an] = await Promise.all([S.todos('sanidad'), S.todos('animales')]);
+    const n = L.alertasSanidad(L.estadosSanidad(san, an)).length;
+    const btn = nav.querySelector('[data-k="sanidad"]');
+    let b = btn.querySelector('.insignia');
+    if (!n) { b && b.remove(); return; }
+    if (!b) { b = h('span', { class: 'insignia' }); btn.append(b); }
+    b.textContent = n > 99 ? '99+' : String(n);
+  } catch { /* sin número si falla */ }
 }
 
 async function configDesdeEnlace(query) {
@@ -76,6 +92,7 @@ async function dibujar() {
     main.replaceChildren(h('div', { class: 'pagina' }, h('div', { class: 'error' }, 'Ocurrió un error al abrir esta pantalla: ' + e.message), h('button', { class: 'btn', onclick: () => ir('/') }, 'Ir al inicio')));
   }
   nav.querySelectorAll('button').forEach(b => b.classList.toggle('activo', b.dataset.k === r[2]));
+  pintarInsignia();
 }
 
 nav.append(...NAV.map(([k, ico, txt, ruta]) => h('button', { 'data-k': k, onclick: () => ir(ruta) }, h('span', { class: 'nav-ico' }, ico), h('span', {}, txt))));
@@ -96,7 +113,7 @@ estadoEl.addEventListener('click', () => { if (!Y.estado.configurado) ir('/ajust
 // Cuando cambian los datos (por mí o por la sincronización), se refresca la pantalla si es una lista/resumen (no un formulario)
 let t = null;
 S.alCambiar(() => {
-  pintarNombre();
+  pintarNombre(); pintarInsignia();
   if (document.querySelector('form, .tabla-ordeno input:focus')) return;       // no interrumpir mientras se escribe
   clearTimeout(t); t = setTimeout(dibujar, 300);
 });

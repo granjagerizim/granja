@@ -7,7 +7,7 @@ import { h, pagina, tarjeta, aviso, ir, confirmar } from '../ui.js';
 
 export async function mas() {
   const item = (icono, texto, ruta) => h('button', { class: 'fila', onclick: () => ir(ruta) }, h('div', { class: 'fila-izq' }, h('div', { class: 'fila-titulo' }, `${icono}  ${texto}`)), h('div', { class: 'fila-der' }, '›'));
-  return pagina('Más', {}, tarjeta(null, item('💵', 'Gastos', '/gastos'), item('💰', 'Ingresos', '/ingresos'), item('🐮', 'Reproducción', '/reproduccion'), item('⚙️', 'Ajustes y respaldo', '/ajustes')));
+  return pagina('Más', {}, tarjeta(null, item('💵', 'Gastos', '/gastos'), item('💰', 'Ingresos', '/ingresos'), item('🐮', 'Reproducción', '/reproduccion'), item('❓', 'Ayuda e instrucciones de uso', '/ayuda'), item('⚙️', 'Ajustes y respaldo', '/ajustes')));
 }
 
 // Vuelve a bajar la app desde internet y la recarga. Los datos no se tocan.
@@ -88,7 +88,7 @@ export async function ajustes() {
   const otros = tarjeta('Esta app',
     instalador ? h('button', { class: 'btn primario', onclick: async () => { instalador.prompt(); instalador = null; } }, 'Instalar en este celular') : h('small', {}, 'Para instalarla: menú ⋮ del navegador → "Instalar aplicación" o "Agregar a la pantalla de inicio".'),
     h('button', { class: 'btn', onclick: buscarActualizacion }, '🔄 Buscar actualización'),
-    h('small', {}, `${APP.nombre} v${APP.version}`));
+    h('small', {}, `Versión ${APP.version}`));
   await pintar();
   return pagina('Ajustes', { atras: '/mas' }, nombreT, conexion, seedT, respaldo, otros);
 }
