@@ -137,3 +137,5 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #7fb77e; border-c
 .resumen3.filtrando .num3:not(.activo) { opacity: .5; }
 .chips-res { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 .aviso-filtro { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; color: var(--suave); }
+.resumen3.cuatro { grid-template-columns: repeat(4, 1fr); } .resumen3.cuatro .num3 b { font-size: 22px; }
+.num3.gris { background: #e8ebe6; color: #444; }

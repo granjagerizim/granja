@@ -31,6 +31,7 @@ const TEMAS = [
   ]],
   ['💉 Sanidad', [
     ['Pestaña Sanidad, botón +. Puedes vacunar o desparasitar a varios animales a la vez.',
+     'Las aplicaciones registradas sin "Repetir en (días)" aparecen como "Sin fecha": se guardan y se listan, pero no generan aviso.',
      'Para que la app avise, escribe en "Repetir en (días)" cada cuánto se repite (ej. 180). Sin ese dato no hay aviso.',
      `Una vacuna pasa a "Próxima" (ámbar) cuando faltan ${AVISO_SANIDAD_DIAS} días o menos, y a "Vencida" (rojo) si ya pasó la fecha.`,
      'El número rojo sobre la pestaña Sanidad suma las vencidas y próximas. También aparecen en Inicio.',
