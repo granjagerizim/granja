@@ -6,7 +6,7 @@ import { inicio } from './screens/inicio.js';
 import { gastos, gastoForm } from './screens/gastos.js';
 import { leche, lecheForm } from './screens/leche.js';
 import { sanidad, sanidadForm } from './screens/sanidad.js';
-import { animales, animalFicha, animalForm } from './screens/animales.js';
+import { animales, animalFicha, animalForm, animalSanidad } from './screens/animales.js';
 import { reproduccion, reproduccionForm } from './screens/reproduccion.js';
 import { ingresos, ingresoForm } from './screens/ingresos.js';
 import { fotoVista } from './screens/fotos.js';
@@ -29,6 +29,7 @@ const RUTAS = [
   [/^\/animales$/, () => animales(), 'animales'],
   [/^\/animales\/nuevo$/, () => animalForm('nuevo'), 'animales'],
   [/^\/animales\/([^/]+)\/editar$/, p => animalForm(p[0]), 'animales'],
+  [/^\/animales\/([^/]+)\/sanidad$/, p => animalSanidad(p[0]), 'animales'],
   [/^\/animales\/([^/]+)$/, p => animalFicha(p[0]), 'animales'],
   [/^\/fotos\/([^/]+)$/, p => fotoVista(p[0]), 'animales'],
   [/^\/reproduccion$/, () => reproduccion(), 'mas'],

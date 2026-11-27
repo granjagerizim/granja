@@ -65,11 +65,13 @@ export async function animalFicha(id) {
 
   const lecheT = a.sexo === 'Hembra' && lr.total30 ? tarjeta('Leche (30 días)', dato('Total', lr.total30.toFixed(1) + ' L'), dato('Promedio por día', lr.promedio.toFixed(1) + ' L')) : null;
 
-  const sanT = tarjeta('Sanidad',
-    est.length ? est.sort((x, y) => (y.rec.fecha || '').localeCompare(x.rec.fecha || '')).slice(0, 8).map(e => filaLista({
-      titulo: `${e.rec.tipo || ''}${e.rec.producto ? ' · ' + e.rec.producto : ''}`, sub: L.fechaCorta(e.rec.fecha),
-      derecha: e.estado ? chip(e.estado, claseEstado(e.estado)) : null, subDerecha: e.proxima ? 'próx. ' + L.fechaCorta(e.proxima) : null,
-      onclick: () => ir('/sanidad/' + e.rec.id) })) : vacio('Sin aplicaciones registradas.'),
+  const grupos = gruposSanidad(est);
+  const sanT = tarjeta(`Sanidad (${est.length} aplicaciones)`,
+    grupos.length ? grupos.map(g => filaLista({
+      titulo: g.titulo, sub: `Última: ${L.fechaCorta(g.ultima.rec.fecha)} · ${g.regs.length} ${g.regs.length > 1 ? 'aplicaciones' : 'aplicación'}`,
+      derecha: g.ultima.estado ? chip(g.ultima.estado, claseEstado(g.ultima.estado)) : null, subDerecha: g.ultima.proxima ? 'próx. ' + L.fechaCorta(g.ultima.proxima) : null,
+      onclick: () => ir('/animales/' + a.id + '/sanidad') })) : vacio('Sin aplicaciones registradas.'),
+    est.length ? h('button', { class: 'btn', onclick: () => ir('/animales/' + a.id + '/sanidad') }, 'Ver historial completo') : null,
     h('button', { class: 'btn', onclick: () => ir('/sanidad/nuevo?animal=' + encodeURIComponent(a.arete)) }, '+ Registrar vacuna / tratamiento'));
   return pagina('Ficha', { atras: '/animales' }, ficha, tarjetaFotos(a, fotos), repT, lecheT, sanT);
 }
@@ -90,4 +92,29 @@ export async function animalForm(id) {
     alCancelar: () => history.back(),
   });
   return pagina(rec ? 'Editar animal' : 'Nuevo animal', { atras: rec ? '/animales/' + id : '/animales' }, form);
+}
+
+// Agrupa las aplicaciones de un animal por tipo + producto (la más reciente primero)
+function gruposSanidad(est) {
+  const m = new Map();
+  for (const e of est) { const k = L.norm(e.rec.tipo) + '|' + L.norm(e.rec.producto); if (!m.has(k)) m.set(k, []); m.get(k).push(e); }
+  return [...m.values()].map(regs => {
+    regs.sort((x, y) => (y.rec.fecha || '').localeCompare(x.rec.fecha || ''));
+    const r = regs[0].rec;
+    return { titulo: `${r.tipo || ''}${r.producto ? ' · ' + r.producto : ''}`, regs, ultima: regs[0] };
+  }).sort((x, y) => (y.ultima.rec.fecha || '').localeCompare(x.ultima.rec.fecha || ''));
+}
+
+export async function animalSanidad(id) {
+  const [an, san] = await Promise.all([S.todos('animales'), S.todos('sanidad')]);
+  const a = an.find(x => x.id === id);
+  if (!a) return pagina('Historial', { atras: '/animales' }, vacio('No se encontró este animal.'));
+  const est = L.estadosSanidad(san, an).filter(e => String(e.rec.animal) === String(a.arete));
+  const dinero = est.reduce((t, e) => t + L.num(e.rec.costo), 0);
+  return pagina('Historial sanitario', { atras: '/animales/' + a.id },
+    tarjeta(null, h('b', {}, L.etiquetaAnimal(a.arete, an)), h('small', {}, `${est.length} aplicaciones en total`)),
+    ...gruposSanidad(est).map(g => tarjeta(`${g.titulo} (${g.regs.length})`,
+      ...g.regs.map(e => h('button', { class: 'fila', onclick: () => ir('/sanidad/' + e.rec.id) },
+        h('div', { class: 'fila-izq' }, h('div', { class: 'fila-titulo' }, L.fechaCorta(e.rec.fecha)), h('small', {}, [e.rec.dosis, e.rec.aplico].filter(Boolean).join(' · '))),
+        h('div', { class: 'fila-der' }, e.estado ? chip(e.estado, claseEstado(e.estado)) : null))))));
 }

@@ -34,6 +34,7 @@ const TEMAS = [
      'Para que la app avise, escribe en "Repetir en (días)" cada cuánto se repite (ej. 180). Sin ese dato no hay aviso.',
      `Una vacuna pasa a "Próxima" (ámbar) cuando faltan ${AVISO_SANIDAD_DIAS} días o menos, y a "Vencida" (rojo) si ya pasó la fecha.`,
      'El número rojo sobre la pestaña Sanidad muestra cuántas alertas hay. También aparecen en Inicio.',
+     'En la ficha del animal ves un resumen por producto; "Ver historial completo" muestra todas sus aplicaciones.',
      'Al aplicar la nueva dosis del mismo producto, la anterior queda como "Renovada" y deja de avisar.',
      'La app no suena con la app cerrada: el aviso se ve al abrirla.'],
   ]],
