@@ -9,6 +9,8 @@ export async function sanidad() {
   let ver = estados.some(e => e.estado === 'Vencida' || e.estado === 'Próxima') ? 'alertas' : 'todas';
   const cuerpo = h('div');
   const orden = { Vencida: 0, 'Próxima': 1 };
+  let fAn = '', fMed = '';
+  const med = e => `${e.rec.tipo || ''}${e.rec.producto ? ' · ' + e.rec.producto : ''}`;
   const dibujar = () => {
     cuerpo.replaceChildren();
     const nAl = L.alertasSanidad(estados).length;
@@ -16,6 +18,17 @@ export async function sanidad() {
       h('button', { class: 'chip-btn' + (ver === 'alertas' ? ' activo' : ''), onclick: () => { ver = 'alertas'; dibujar(); } }, `Alertas (${nAl})`),
       h('button', { class: 'chip-btn' + (ver === 'todas' ? ' activo' : ''), onclick: () => { ver = 'todas'; dibujar(); } }, `Todas (${estados.length})`)));
     let lista = [...estados];
+    if (ver === 'todas') {
+      const meds = [...new Set(estados.map(med))].sort();
+      const ans = animales.filter(a => !a.deleted).sort((x, y) => String(x.arete).localeCompare(String(y.arete), 'es', { numeric: true }));
+      const selAn = h('select', { onchange: e => { fAn = e.target.value; dibujar(); } }, h('option', { value: '' }, 'Animal: todos'), ...ans.map(a => h('option', { value: String(a.arete) }, L.etiquetaAnimal(a.arete, animales))));
+      const selMed = h('select', { onchange: e => { fMed = e.target.value; dibujar(); } }, h('option', { value: '' }, 'Medicamento: todos'), ...meds.map(m => h('option', { value: m }, m)));
+      selAn.value = fAn; selMed.value = fMed;
+      cuerpo.append(h('div', { class: 'dos' }, selAn, selMed));
+      if (fAn) lista = lista.filter(e => String(e.rec.animal) === fAn);
+      if (fMed) lista = lista.filter(e => med(e) === fMed);
+      cuerpo.append(h('div', { class: 'resumen-linea' }, `Mostrando ${lista.length} de ${estados.length} aplicaciones`));
+    }
     if (ver === 'alertas') lista = L.alertasSanidad(lista);
     else lista.sort((a, b) => (orden[a.estado] ?? 9) - (orden[b.estado] ?? 9) || (b.rec.fecha || '').localeCompare(a.rec.fecha || ''));
     if (!lista.length) cuerpo.append(vacio(ver === 'alertas' ? 'Todo al día: no hay vacunas ni desparasitaciones vencidas o próximas.' : 'Aún no hay aplicaciones registradas.'));
