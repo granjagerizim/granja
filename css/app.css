@@ -139,3 +139,12 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #7fb77e; border-c
 .aviso-filtro { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; color: var(--suave); }
 .resumen3.cuatro { grid-template-columns: repeat(4, 1fr); } .resumen3.cuatro .num3 b { font-size: 22px; }
 .num3.gris { background: #e8ebe6; color: #444; }
+
+.acc { display: flex; flex-direction: column; gap: 6px; }
+.panel-acc { display: flex; gap: 6px; flex-wrap: wrap; padding: 2px 2px 6px; } .panel-acc .btn { flex: 1 1 auto; padding: 9px 8px; font-size: 14px; }
+.resumen3.cuatro .num3 span { font-size: 11px; text-align: center; }
+.panel-acc[hidden] { display: none; }
+
+.vista-previa { font-size: 13px; font-weight: 600; padding: 8px 10px; border-radius: 8px; margin-top: 2px; }
+.vista-previa.rojo { background: var(--rojo-bg); color: var(--rojo); } .vista-previa.ambar { background: var(--ambar-bg); color: var(--ambar); } .vista-previa.verde { background: var(--ok-bg); color: var(--ok); }
+.vista-previa.oculto { display: none; }

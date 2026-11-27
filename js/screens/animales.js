@@ -38,10 +38,11 @@ export async function animales() {
   return pagina('Animales', { atras: '/mas' }, cuerpo, fab('Nuevo animal', () => ir('/animales/nuevo')));
 }
 
-export async function animalFicha(id) {
+export async function animalFicha(id, query = {}) {
+  const volver = query.de === 'sanidad' ? '/sanidad' : '/animales';   // si llegaste desde Sanidad, la flecha ‹ vuelve ahí
   const [an, repro, san, leche, fotos] = await Promise.all([S.todos('animales'), S.todos('reproduccion'), S.todos('sanidad'), S.todos('leche'), S.todos('fotos')]);
   const a = an.find(x => x.id === id);
-  if (!a) return pagina('Animal', { atras: '/animales' }, vacio('No se encontró este animal.'));
+  if (!a) return pagina('Animal', { atras: volver }, vacio('No se encontró este animal.'));
   const r = L.estadoRepro(a, repro);
   const est = L.estadosSanidad(san, an).filter(e => String(e.rec.animal) === String(a.arete));
   const lr = L.resumenLeche(leche.filter(x => String(x.animal) === String(a.arete)));
@@ -76,7 +77,7 @@ export async function animalFicha(id) {
         h('div', { class: 'fila-izq' }, h('div', { class: 'fila-titulo' }, L.fechaCorta(e.rec.fecha)), h('small', {}, [e.rec.dosis, e.rec.aplico].filter(Boolean).join(' · '))),
         h('div', { class: 'fila-der' }, e.estado ? chip(e.estado, claseEstado(e.estado)) : null))))) : vacio('Sin aplicaciones registradas.'),
     h('button', { class: 'btn', onclick: () => ir('/sanidad/nuevo?animal=' + encodeURIComponent(a.arete)) }, '+ Registrar vacuna / tratamiento'));
-  return pagina('Ficha', { atras: '/animales' }, ficha, tarjetaFotos(a, fotos), repT, lecheT, sanT);
+  return pagina('Ficha', { atras: volver }, ficha, tarjetaFotos(a, fotos), repT, lecheT, sanT);
 }
 
 export async function animalForm(id) {

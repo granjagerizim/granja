@@ -36,7 +36,7 @@ export async function opcionesAnimal({ soloHembras = false, incluir = null } = {
 
 // ---------- formulario genérico ----------
 // Crea el formulario de una tabla a partir de TABLAS[tabla].campos.
-export async function formulario(tabla, rec, { alGuardar, alEliminar, alCancelar, valoresIniciales = {}, noRequeridos = [], ocultar = [] } = {}) {
+export async function formulario(tabla, rec, { alGuardar, alEliminar, alCancelar, valoresIniciales = {}, noRequeridos = [], ocultar = [], vistaPrevia = {} } = {}) {
   const def = TABLAS[tabla];
   const nuevo = !rec || !rec.id;
   const datos = { ...valoresIniciales, ...(rec || {}) };
@@ -45,6 +45,7 @@ export async function formulario(tabla, rec, { alGuardar, alEliminar, alCancelar
   const hembras = await opcionesAnimal({ soloHembras: true, incluir: datos.animal });
   const todas = await opcionesAnimal({ incluir: datos.animal });
 
+  const previas = Object.fromEntries(Object.keys(vistaPrevia).map(k => [k, h('div', { class: 'vista-previa oculto' })]));
   const otros = {};                                   // cuadros de texto de los campos "libre" (opción "Otro…")
   const existentes = await S.todos(tabla);
   const valorDe = c => {
@@ -55,6 +56,7 @@ export async function formulario(tabla, rec, { alGuardar, alEliminar, alCancelar
   const actualizarVisibles = () => {
     const r = leer();
     for (const c of def.campos) if (c.visibleSi) filas[c.k].classList.toggle('oculto', !c.visibleSi(r));
+    for (const k of Object.keys(vistaPrevia)) { const t = vistaPrevia[k](r) || {}; previas[k].textContent = t.texto || ''; previas[k].className = 'vista-previa ' + (t.clase || '') + (t.texto ? '' : ' oculto'); }
   };
 
   for (const c of def.campos) {
@@ -80,7 +82,7 @@ export async function formulario(tabla, rec, { alGuardar, alEliminar, alCancelar
     else ctl = h('input', { type: 'text', autocomplete: 'off', value: ini });
     ctl.addEventListener('input', actualizarVisibles);
     controles[c.k] = ctl;
-    filas[c.k] = h('label', { class: 'campo' + (ocultar.includes(c.k) ? ' oculto' : '') }, h('span', {}, c.label, c.req ? ' *' : ''), ctl, otros[c.k] || null, c.ayuda ? h('small', {}, c.ayuda) : null);
+    filas[c.k] = h('label', { class: 'campo' + (ocultar.includes(c.k) ? ' oculto' : '') }, h('span', {}, c.label, c.req ? ' *' : ''), ctl, otros[c.k] || null, previas[c.k] || null, c.ayuda ? h('small', {}, c.ayuda) : null);
   }
 
   const error = h('div', { class: 'error oculto' });

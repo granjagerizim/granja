@@ -29,7 +29,7 @@ const RUTAS = [
   [/^\/animales$/, () => animales(), 'animales'],
   [/^\/animales\/nuevo$/, () => animalForm('nuevo'), 'animales'],
   [/^\/animales\/([^/]+)\/editar$/, p => animalForm(p[0]), 'animales'],
-  [/^\/animales\/([^/]+)$/, p => animalFicha(p[0]), 'animales'],
+  [/^\/animales\/([^/]+)$/, (p, q) => animalFicha(p[0], q), 'animales'],
   [/^\/fotos\/([^/]+)$/, p => fotoVista(p[0]), 'animales'],
   [/^\/reproduccion$/, () => reproduccion(), 'mas'],
   [/^\/reproduccion\/([^/]+)$/, (p, q) => reproduccionForm(p[0], q), 'mas'],
@@ -91,7 +91,7 @@ async function dibujar() {
     console.error(e);
     main.replaceChildren(h('div', { class: 'pagina' }, h('div', { class: 'error' }, 'Ocurrió un error al abrir esta pantalla: ' + e.message), h('button', { class: 'btn', onclick: () => ir('/') }, 'Ir al inicio')));
   }
-  nav.querySelectorAll('button').forEach(b => b.classList.toggle('activo', b.dataset.k === r[2]));
+  nav.querySelectorAll('button').forEach(b => b.classList.toggle('activo', b.dataset.k === (query.de && NAV.some(n => n[0] === query.de) && r[2] === 'animales' ? query.de : r[2])));
   pintarInsignia();
 }
 
