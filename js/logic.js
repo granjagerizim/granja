@@ -50,15 +50,20 @@ export function balance(gastos, ingresos = []) {
     else if (g.quien in propio) propio[g.quien] += num(g.monto);
     else sinSocio += num(g.monto);
   }
-  const filas = SOCIOS.map(s => {
-    const pagado = propio[s] + enSociedad[s], corresponde = total * PARTES[s];
-    return { socio: s, pagado, propio: propio[s], enSociedad: enSociedad[s], corresponde, diferencia: pagado - corresponde };
-  });
-  // quien tiene diferencia negativa le debe a quien tiene positiva (con 2 socios, es una sola deuda)
-  const deudor = filas.reduce((a, b) => (b.diferencia < a.diferencia ? b : a));
-  const acreedor = filas.reduce((a, b) => (b.diferencia > a.diferencia ? b : a));
-  const monto = Math.abs(deudor.diferencia);
-  return { total, totalIngresos, neto, filas, sinSocio, deuda: monto < 0.005 ? null : { de: deudor.socio, a: acreedor.socio, monto } };
+  // Cada socio debería cargar con su parte del NETO (gastos − ingresos): los ingresos de la sociedad bajan lo que se deben.
+  const calcular = base => {
+    const filas = SOCIOS.map(s => {
+      const pagado = propio[s] + enSociedad[s], corresponde = base * PARTES[s];
+      return { socio: s, pagado, propio: propio[s], enSociedad: enSociedad[s], corresponde, diferencia: pagado - corresponde };
+    });
+    // quien pagó menos de lo que le corresponde le debe a quien pagó más (con 2 socios, es una sola deuda)
+    const deudor = filas.reduce((a, b) => (b.diferencia < a.diferencia ? b : a));
+    const acreedor = filas.reduce((a, b) => (b.diferencia > a.diferencia ? b : a));
+    const monto = deudor.diferencia < 0 ? -deudor.diferencia : 0;
+    return { filas, deuda: monto < 0.005 ? null : { de: deudor.socio, a: acreedor.socio, monto } };
+  };
+  const { filas, deuda } = calcular(neto), sin = calcular(total).deuda;   // sin = lo que se deberían si no hubiera ingresos
+  return { total, totalIngresos, neto, filas, sinSocio, deuda, deudaSinIngresos: sin };
 }
 export function ingresosPorCategoria(ingresos) {
   const m = new Map();

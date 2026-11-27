@@ -15,11 +15,10 @@ export async function gastos() {
     const hayIngresos = b.totalIngresos > 0;
     cuerpo.append(tarjeta('Inversión en la granja',
       h('small', {}, 'Total gastado'), h('div', { class: 'grande' }, L.dinero(b.total)),
-      hayIngresos ? h('div', { class: 'lineas' }, h('div', {}, `Ingresos de la sociedad: ${L.dinero(b.totalIngresos)}`), h('div', {}, `Balance (gastos − ingresos): ${L.dinero(b.neto)}`)) : null,
       h('div', { class: 'socios' }, b.filas.map(f => h('div', { class: 'socio', style: `--c:${COLOR_SOCIO[f.socio]}` },
         h('span', { class: 'socio-nombre' }, f.socio), h('b', {}, L.dinero(f.pagado)),
         h('small', {}, b.total ? Math.round(f.pagado / b.total * 1000) / 10 + '% del total' : '')))),
-      b.deuda ? h('div', { class: 'deuda' }, `${b.deuda.de} le debe ${L.dinero(b.deuda.monto)} a ${b.deuda.a}`) : h('div', { class: 'deuda ok' }, 'Están a mano'),
+      hayIngresos ? h('div', { class: 'lineas' }, h('div', {}, `Ingresos de la sociedad: ${L.dinero(b.totalIngresos)}`), h('div', { class: 'balance ' + (b.neto > 0 ? 'rojo' : b.neto < 0 ? 'verde' : '') }, `Balance (ingresos - gastos): ${b.neto > 0 ? '-' : ''}${L.dinero(Math.abs(b.neto))}`)) : null,
       b.sinSocio > 0 ? h('div', { class: 'error' }, `⚠ Hay ${L.dinero(b.sinSocio)} sin socio asignado`) : null,
       h('button', { class: 'btn', onclick: () => { verCategorias = !verCategorias; dibujar(); } }, verCategorias ? 'Ocultar categorías' : 'Ver por categoría')));
     if (verCategorias) {

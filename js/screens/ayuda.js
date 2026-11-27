@@ -11,7 +11,7 @@ const TEMAS = [
     ['Más → Gastos, botón + para anotar uno. Escribe fecha, quién pagó, monto y descripción.',
      '"Quién pagó": Omar, Kirwuin o "Sociedad (mitad y mitad)" si se pagó con dinero común: ese gasto se suma mitad a cada uno y no genera deuda.',
      'La categoría se elige sola según la descripción (ej. "sal mineral" → Animales y alimento; "veterinario" → Salud animal; "flete" → Transporte). Si no es la correcta, cámbiala: el recuadro verde deja de mostrarse.',
-     'Arriba está el total gastado, el balance (gastos − ingresos), cuánto lleva gastado cada socio y quién le debe a quién.',
+     'Arriba está el total gastado, lo que lleva gastado cada socio y, debajo, los ingresos de la sociedad y el balance (ingresos - gastos): rojo si es negativo, verde si es positivo.',
      'Para corregir o borrar un gasto, tócalo en la lista.'],
   ]],
   ['💰 Ingresos', [
