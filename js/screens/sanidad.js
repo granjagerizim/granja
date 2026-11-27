@@ -1,46 +1,81 @@
-// Sanidad: lista con alertas, y formulario que permite aplicar a varios animales a la vez.
+// Sanidad: resumen (vencidas / próximas / al día) con tres vistas de lo pendiente, y formulario que permite aplicar a varios animales a la vez.
 import * as S from '../store.js';
 import * as L from '../logic.js';
 import { h, pagina, filaLista, ir, vacio, fab, formulario, aviso, chip, claseEstado, opcionesAnimal, tarjeta } from '../ui.js';
 
+let vista = 'fecha';
+let filtro = '';   // '', 'Vencida', 'Próxima' o 'Al día' (se activa tocando los cuadros de arriba)
+const COLOR = { Vencida: '#b3261e', 'Próxima': '#c98a00', 'Al día': '#5aa469' };
+
+// Texto relativo: "venció hace 12 días", "en 5 días", "en 3 meses"
+function cuando(d) {
+  const n = Math.abs(d), t = n >= 60 ? `${Math.round(n / 30)} meses` : n === 1 ? '1 día' : `${n} días`;
+  return d < 0 ? `venció hace ${t}` : d === 0 ? 'toca hoy' : `en ${t}`;
+}
+
 export async function sanidad() {
   const [regs, animales] = await Promise.all([S.todos('sanidad'), S.todos('animales')]);
-  const estados = L.estadosSanidad(regs, animales);
-  let ver = estados.some(e => e.estado === 'Vencida' || e.estado === 'Próxima') ? 'alertas' : 'todas';
-  const cuerpo = h('div');
-  const orden = { Vencida: 0, 'Próxima': 1 };
-  let fAn = '', fMed = '';
+  const idDe = arete => (animales.find(a => String(a.arete) === String(arete)) || {}).id;
+  // Solo lo pendiente: la próxima dosis de cada animal + medicamento (el historial está en la ficha de cada animal)
+  const todos = L.estadosSanidad(regs, animales).filter(e => e.estado === 'Vencida' || e.estado === 'Próxima' || e.estado === 'Al día');
+  const cuenta = est => todos.filter(e => e.estado === est).length;
   const med = e => `${e.rec.tipo || ''}${e.rec.producto ? ' · ' + e.rec.producto : ''}`;
+  const fila = (e, conAnimal = true, conMed = true) => filaLista({
+    titulo: conAnimal ? L.etiquetaAnimal(e.rec.animal, animales) : med(e), sub: conMed && conAnimal ? med(e) : `Última aplicación: ${L.fechaCorta(e.rec.fecha)}`,
+    derecha: chip(e.estado, claseEstado(e.estado)), subDerecha: cuando(e.dias), color: COLOR[e.estado],
+    onclick: () => ir('/animales/' + idDe(e.rec.animal)) });
+  const cuerpo = h('div', { class: 'pagina-int' });
+
+  const resumen = h('div', { class: 'resumen3' });
+  const pintarResumen = () => {
+    resumen.classList.toggle('filtrando', !!filtro);
+    resumen.replaceChildren(...[['Vencida', 'Vencidas', 'rojo'], ['Próxima', 'Próximas', 'ambar'], ['Al día', 'Al día', 'verde']].map(([est, txt, c]) =>
+      h('button', { class: 'num3 ' + c + (filtro === est ? ' activo' : ''), 'aria-pressed': String(filtro === est), onclick: () => { filtro = filtro === est ? '' : est; dibujar(); } }, h('b', {}, cuenta(est)), h('span', {}, txt))));
+  };
+
   const dibujar = () => {
-    cuerpo.replaceChildren();
-    const nAl = L.alertasSanidad(estados).length;
-    cuerpo.append(h('div', { class: 'filtros' },
-      h('button', { class: 'chip-btn' + (ver === 'alertas' ? ' activo' : ''), onclick: () => { ver = 'alertas'; dibujar(); } }, `Alertas (${nAl})`),
-      h('button', { class: 'chip-btn' + (ver === 'todas' ? ' activo' : ''), onclick: () => { ver = 'todas'; dibujar(); } }, `Todas (${estados.length})`)));
-    let lista = [...estados];
-    if (ver === 'todas') {
-      const meds = [...new Set(estados.map(med))].sort();
-      const ans = animales.filter(a => !a.deleted).sort((x, y) => String(x.arete).localeCompare(String(y.arete), 'es', { numeric: true }));
-      const selAn = h('select', { onchange: e => { fAn = e.target.value; dibujar(); } }, h('option', { value: '' }, 'Animal: todos'), ...ans.map(a => h('option', { value: String(a.arete) }, L.etiquetaAnimal(a.arete, animales))));
-      const selMed = h('select', { onchange: e => { fMed = e.target.value; dibujar(); } }, h('option', { value: '' }, 'Medicamento: todos'), ...meds.map(m => h('option', { value: m }, m)));
-      selAn.value = fAn; selMed.value = fMed;
-      cuerpo.append(h('div', { class: 'dos' }, selAn, selMed));
-      if (fAn) lista = lista.filter(e => String(e.rec.animal) === fAn);
-      if (fMed) lista = lista.filter(e => med(e) === fMed);
-      cuerpo.append(h('div', { class: 'resumen-linea' }, `Mostrando ${lista.length} de ${estados.length} aplicaciones`));
+    pintarResumen();
+    const pend = filtro ? todos.filter(e => e.estado === filtro) : todos;
+    cuerpo.replaceChildren(h('div', { class: 'filtros' }, ...[['fecha', 'Por fecha'], ['animal', 'Por animal'], ['med', 'Por medicamento']].map(([k, t]) =>
+      h('button', { class: 'chip-btn' + (vista === k ? ' activo' : ''), onclick: () => { vista = k; dibujar(); } }, t))));
+    if (filtro) cuerpo.append(h('div', { class: 'aviso-filtro' }, h('span', {}, `Mostrando solo: ${filtro === 'Vencida' ? 'vencidas' : filtro === 'Próxima' ? 'próximas' : 'al día'} (${pend.length})`), h('button', { class: 'chip-btn', onclick: () => { filtro = ''; dibujar(); } }, 'Quitar filtro ✕')));
+    if (!pend.length) { cuerpo.append(vacio(filtro ? 'No hay aplicaciones en este estado.' : 'Aún no hay aplicaciones con fecha de repetición.')); return; }
+    if (vista === 'fecha') {
+      const grupos = [['Vencidas', e => e.dias < 0], ['Esta semana', e => e.dias >= 0 && e.dias <= 7], ['Este mes', e => e.dias > 7 && e.dias <= 30], ['Más adelante', e => e.dias > 30]];
+      for (const [titulo, f] of grupos) {
+        const items = pend.filter(f).sort((a, b) => a.dias - b.dias);
+        if (!items.length) continue;
+        const lista = items.map(e => fila(e));
+        if (titulo === 'Más adelante' && !filtro) cuerpo.append(h('details', { class: 'grupo-san' }, h('summary', {}, h('span', { class: 'grupo-tit' }, `${titulo} (${items.length})`), h('small', {}, 'al día')), ...lista));
+        else cuerpo.append(h('div', { class: 'tipo-tit' }, `${titulo} · ${items.length}`), ...lista);
+      }
+    } else if (vista === 'animal') {
+      const porAn = new Map();
+      for (const e of pend) { const k = String(e.rec.animal); if (!porAn.has(k)) porAn.set(k, []); porAn.get(k).push(e); }
+      const filas = [...porAn.entries()].map(([arete, es]) => {
+        es.sort((a, b) => a.dias - b.dias);
+        const v = es.filter(e => e.estado === 'Vencida').length, p = es.filter(e => e.estado === 'Próxima').length;
+        return { arete, es, v, p, sig: es[0] };
+      }).sort((a, b) => b.v - a.v || b.p - a.p || a.sig.dias - b.sig.dias);
+      cuerpo.append(...filas.map(({ arete, v, p, sig }) => filaLista({
+        titulo: L.etiquetaAnimal(arete, animales),
+        sub: v || p ? `Siguiente: ${med(sig)} · ${cuando(sig.dias)}` : `Próxima: ${med(sig)} · ${cuando(sig.dias)}`,
+        derecha: v ? chip(`${v} vencida${v > 1 ? 's' : ''}`, 'rojo') : p ? chip(`${p} próxima${p > 1 ? 's' : ''}`, 'ambar') : chip('Al día ✓', 'verde'),
+        color: v ? COLOR.Vencida : p ? COLOR['Próxima'] : COLOR['Al día'], onclick: () => ir('/animales/' + idDe(arete)) })));
+    } else {
+      const porMed = new Map();
+      for (const e of pend) { const k = med(e); if (!porMed.has(k)) porMed.set(k, []); porMed.get(k).push(e); }
+      const grupos = [...porMed.entries()].map(([m, es]) => ({ m, es: es.sort((a, b) => a.dias - b.dias), v: es.filter(e => e.estado === 'Vencida').length, p: es.filter(e => e.estado === 'Próxima').length }))
+        .sort((a, b) => b.v - a.v || b.p - a.p);
+      cuerpo.append(...grupos.map(g => h('details', { class: 'grupo-san', open: g.v > 0 ? true : null },
+        h('summary', {}, h('div', { class: 'grupo-cab' }, h('span', { class: 'grupo-tit' }, g.m), h('small', {}, `${g.es.length} animales`)),
+          h('div', { class: 'chips-res' }, g.v ? chip(`${g.v} vencida${g.v > 1 ? 's' : ''}`, 'rojo') : null, g.p ? chip(`${g.p} próxima${g.p > 1 ? 's' : ''}`, 'ambar') : null, !g.v && !g.p ? chip('Al día ✓', 'verde') : null)),
+        ...g.es.map(e => fila(e, true, false))))); 
+      // en esta vista cada fila muestra "Última aplicación" bajo el animal
     }
-    if (ver === 'alertas') lista = L.alertasSanidad(lista);
-    else lista.sort((a, b) => (orden[a.estado] ?? 9) - (orden[b.estado] ?? 9) || (b.rec.fecha || '').localeCompare(a.rec.fecha || ''));
-    if (!lista.length) cuerpo.append(vacio(ver === 'alertas' ? 'Todo al día: no hay vacunas ni desparasitaciones vencidas o próximas.' : 'Aún no hay aplicaciones registradas.'));
-    cuerpo.append(...lista.map(e => filaLista({
-      titulo: L.etiquetaAnimal(e.rec.animal, animales),
-      sub: `${e.rec.tipo || ''}${e.rec.producto ? ' · ' + e.rec.producto : ''} · ${L.fechaCorta(e.rec.fecha)}`,
-      derecha: e.estado ? chip(e.estado, claseEstado(e.estado)) : null,
-      subDerecha: e.proxima ? `próx. ${L.fechaCorta(e.proxima)}` : null,
-      onclick: () => ir('/sanidad/' + e.rec.id) })));
   };
   dibujar();
-  return pagina('Sanidad', {}, cuerpo, fab('Nueva aplicación', () => ir('/sanidad/nuevo')));
+  return pagina('Sanidad', {}, resumen, cuerpo, fab('Nueva aplicación', () => ir('/sanidad/nuevo')));
 }
 
 export async function sanidadForm(id, query = {}) {
