@@ -6,7 +6,7 @@
 // ============================================================================
 
 export const REPITE = { si: 'Sí, se repite', no: 'No, es único' };   // respuesta a "¿Se repite?" en Sanidad
-export const APP = { nombre: 'Granja', version: '1.7.1' };
+export const APP = { nombre: 'Granja', version: '1.7.2' };
 
 // Socios y reparto de gastos (deben sumar 1). Los nombres deben coincidir con los de la hoja.
 export const SOCIOS = ['Omar', 'Kirwuin'];
