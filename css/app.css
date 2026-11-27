@@ -114,3 +114,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #7fb77e; border-c
 .ayuda details[open] summary { border-bottom: 1px solid var(--borde); margin-bottom: 8px; }
 .ayuda ul { margin: 0 0 12px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .ayuda p { margin: 0 0 10px; }
+
+/* Historial sanitario desplegable */
+.grupo-san { border: 1px solid var(--borde); border-radius: 14px; background: #fff; padding: 0 10px 0; }
+.grupo-san[open] { padding-bottom: 10px; }
+.grupo-san summary { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 14px 2px; cursor: pointer; list-style: none; }
+.grupo-san summary::-webkit-details-marker { display: none; }
+.grupo-san summary::before { content: '▸'; color: var(--verde); margin-right: 6px; }
+.grupo-san[open] summary::before { content: '▾'; }
+.grupo-tit { flex: 1; font-weight: 700; color: var(--verde); }
+.grupo-san[open] summary { border-bottom: 1px solid var(--borde); margin-bottom: 8px; }
+.grupo-san .fila { margin-bottom: 8px; }

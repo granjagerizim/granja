@@ -5,7 +5,7 @@
 //  Después de cambiar algo, basta recargar la app.
 // ============================================================================
 
-export const APP = { nombre: 'Granja', version: '1.2.0' };
+export const APP = { nombre: 'Granja', version: '1.2.1' };
 
 // Socios y reparto de gastos (deben sumar 1). Los nombres deben coincidir con los de la hoja.
 export const SOCIOS = ['Omar', 'Kirwuin'];

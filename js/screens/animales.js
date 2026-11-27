@@ -110,10 +110,13 @@ export async function animalSanidad(id) {
   const a = an.find(x => x.id === id);
   if (!a) return pagina('Historial', { atras: '/animales' }, vacio('No se encontró este animal.'));
   const est = L.estadosSanidad(san, an).filter(e => String(e.rec.animal) === String(a.arete));
-  const dinero = est.reduce((t, e) => t + L.num(e.rec.costo), 0);
   return pagina('Historial sanitario', { atras: '/animales/' + a.id },
     tarjeta(null, h('b', {}, L.etiquetaAnimal(a.arete, an)), h('small', {}, `${est.length} aplicaciones en total`)),
-    ...gruposSanidad(est).map(g => tarjeta(`${g.titulo} (${g.regs.length})`,
+    h('small', {}, 'Toca un producto para ver todas sus aplicaciones.'),
+    ...gruposSanidad(est).map(g => h('details', { class: 'grupo-san' },
+      h('summary', {},
+        h('span', { class: 'grupo-tit' }, `${g.titulo} (${g.regs.length})`),
+        g.ultima.estado ? chip(g.ultima.estado, claseEstado(g.ultima.estado)) : null),
       ...g.regs.map(e => h('button', { class: 'fila', onclick: () => ir('/sanidad/' + e.rec.id) },
         h('div', { class: 'fila-izq' }, h('div', { class: 'fila-titulo' }, L.fechaCorta(e.rec.fecha)), h('small', {}, [e.rec.dosis, e.rec.aplico].filter(Boolean).join(' · '))),
         h('div', { class: 'fila-der' }, e.estado ? chip(e.estado, claseEstado(e.estado)) : null))))));
