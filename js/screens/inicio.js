@@ -15,7 +15,7 @@ export async function inicio() {
   const modulo = (icono, texto, ruta) => h('button', { class: 'modulo', onclick: () => ir(ruta) }, h('span', { class: 'modulo-ico' }, icono), h('span', {}, texto));
   const modulos = h('div', { class: 'modulos' },
     modulo('💵', 'Gastos', '/gastos'), modulo('💰', 'Ingresos', '/ingresos'), modulo('🥛', 'Leche', '/leche'),
-    modulo('💉', 'Sanidad', '/sanidad'), modulo('🐄', 'Animales', '/animales'), modulo('🐮', 'Reproducción', '/reproduccion'));
+    modulo('💉', 'Salud', '/sanidad'), modulo('🐄', 'Animales', '/animales'), modulo('🐮', 'Reproducción', '/reproduccion'));
 
   const lecheT = tarjeta('Leche',
     lr.ultimoDia
@@ -26,7 +26,7 @@ export async function inicio() {
          h('small', {}, `Total 30 días: ${lr.total30.toFixed(1)} L`)]
       : vacio('Aún no hay ordeños registrados.'));
 
-  const alertasT = tarjeta(`Alertas sanitarias${alertas.length ? ` (${alertas.length})` : ''}`,
+  const alertasT = tarjeta(`Alertas de salud${alertas.length ? ` (${alertas.length})` : ''}`,
     alertas.length
       ? alertas.slice(0, 6).map(a => filaLista({
         titulo: nombre(a.rec.animal), sub: `${a.rec.tipo}${a.rec.producto ? ' · ' + a.rec.producto : ''}`,

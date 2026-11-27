@@ -4,24 +4,26 @@ import { APP, AVISO_SANIDAD_DIAS } from '../config.js';
 
 const TEMAS = [
   ['🏠 Inicio', [
-    'Es el panel de la granja: arriba los módulos (Gastos, Ingresos, Leche, Sanidad, Animales, Reproducción) y abajo resúmenes: leche de hoy, alertas sanitarias, próximos partos y cuántos animales hay.',
+    'Es el panel de la granja: arriba los módulos (Gastos, Ingresos, Leche, Salud, Animales, Reproducción) y abajo resúmenes: leche de hoy, alertas de salud, próximos partos y cuántos animales hay.',
     'Toca cualquier módulo o tarjeta para entrar.',
   ]],
   ['💵 Gastos', [
     ['Más → Gastos, botón + para anotar uno. Escribe fecha, quién pagó, monto y descripción.',
-     'La categoría se asigna sola según la descripción (ej. "sal mineral" → Alimento). Puedes cambiarla a mano.',
-     'Arriba está el cuadro de inversión: cuánto puso cada socio, cuánto le corresponde y quién le debe a quién.',
+     '"Quién pagó": Omar, Kirwuin o "Sociedad (mitad y mitad)" si se pagó con dinero común: ese gasto se suma mitad a cada uno y no genera deuda.',
+     'La categoría se elige sola según la descripción (ej. "sal mineral" → Animales y alimento; "veterinario" → Salud animal; "flete" → Transporte). Si no es la correcta, cámbiala: el recuadro verde deja de mostrarse.',
+     'Arriba está el total gastado, el balance (gastos − ingresos), cuánto lleva gastado cada socio y quién le debe a quién.',
      'Para corregir o borrar un gasto, tócalo en la lista.'],
   ]],
   ['💰 Ingresos', [
     ['Más → Ingresos, botón +. Sirve para ventas de ganado, leche, queso, etc.',
-     'Indica quién cobró el dinero y a quién corresponde: normalmente "Sociedad (mitad y mitad)"; si es de uno solo, elige "Solo Omar" o "Solo Kirwuin".',
-     'Los ingresos se descuentan en el balance de la pantalla Gastos.',
+     'Todos los ingresos son de la sociedad: no hay que indicar quién cobró.',
+     'Se restan en el balance de la pantalla Gastos (gastos − ingresos), pero no cambian lo que se deben los socios.',
      'Si es la venta de un animal registrado, elígelo en el formulario y quedará marcado como Vendido.'],
   ]],
   ['🐄 Animales', [
     ['Cada animal tiene nombre y N.º identificador (el número no se repite). Ese número une sus vacunas, partos, leche y fotos: mejor no cambiarlo después; el nombre sí se puede cambiar.',
-     'En la ficha ves sus datos, compra (precio, vendedor, fecha), propietario, sanidad y fotos.',
+     'En la ficha ves sus datos, compra (precio, vendedor, fecha), propietario, salud y fotos.',
+     'Arriba tienes cuadros que filtran: Activos, Sociedad, De terceros (e Inactivos si hay vendidos). Cambia entre Lista, Por propietario y Por categoría.',
      'Propietario: si el animal es de otra persona (ej. un familiar) no entra en el balance de gastos.',
      'Fotos: "Agregar foto" (cámara o galería). La primera queda de perfil; toca una foto para cambiar el perfil, ponerle nota o eliminarla. Funcionan sin señal.'],
   ]],
@@ -29,14 +31,14 @@ const TEMAS = [
     ['Pestaña Leche: escribe los litros de la mañana y de la tarde por vaca y pulsa "Guardar ordeño".',
      'Si repites el ordeño del mismo día, se corrige el anterior (no se duplica).'],
   ]],
-  ['💉 Sanidad', [
-    ['Pestaña Sanidad, botón +. Puedes vacunar o desparasitar a varios animales a la vez.',
+  ['💉 Salud', [
+    ['Pestaña Salud, botón +. Puedes vacunar o desparasitar a varios animales a la vez.',
      'Cada aplicación pregunta "¿Se repite?". Si eliges "Sí, se repite", escribe cada cuántos días (ej. 180): debajo verás la próxima fecha y si quedará Al día, Próxima o Vencida. Los días se cuentan desde la fecha de aplicación.',
      'Si eliges "No, es único" (un tratamiento puntual, una revisión), no genera aviso ni aparece como pendiente.',
      `Una vacuna pasa a "Próxima" (ámbar) cuando faltan ${AVISO_SANIDAD_DIAS} días o menos, y a "Vencida" (rojo) si ya pasó la fecha.`,
-     'El número rojo sobre la pestaña Sanidad suma las vencidas y próximas. También aparecen en Inicio.',
+     'El número rojo sobre la pestaña Salud suma las vencidas y próximas. También aparecen en Inicio.',
      'En la ficha del animal, cada medicamento o procedimiento es un desplegable: tócalo para ver todas sus aplicaciones.',
-     'La pestaña Sanidad muestra lo pendiente: toca Vencidas, Próximas o Al día para filtrar, y cambia entre Por fecha, Por animal y Medicamento. "Recientes" lista las últimas aplicaciones de cualquier tipo.',
+     'La pestaña Salud muestra lo pendiente: toca Vencidas, Próximas o Al día para filtrar, y cambia entre Por fecha, Por animal y Medicamento. "Recientes" lista las últimas aplicaciones de cualquier tipo.',
      'Toca una fila para ver sus opciones: Nueva dosis (formulario con los datos ya puestos), Editar registro o Ver ficha.',
      '"Por completar" reúne los registros antiguos que nunca respondieron "¿Se repite?": tócalos y elige "Completar datos".',
      'Al aplicar la nueva dosis del mismo producto, la anterior queda como "Renovada" y deja de avisar.',

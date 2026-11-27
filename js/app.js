@@ -37,7 +37,7 @@ const RUTAS = [
   [/^\/ajustes$/, () => ajustes(), 'mas'],
   [/^\/ayuda$/, () => ayuda(), 'mas'],
 ];
-const NAV = [['inicio', '🏠', 'Inicio', '/'], ['animales', '🐄', 'Animales', '/animales'], ['leche', '🥛', 'Leche', '/leche'], ['sanidad', '💉', 'Sanidad', '/sanidad'], ['mas', '☰', 'Más', '/mas']];
+const NAV = [['inicio', '🏠', 'Inicio', '/'], ['animales', '🐄', 'Animales', '/animales'], ['leche', '🥛', 'Leche', '/leche'], ['sanidad', '💉', 'Salud', '/sanidad'], ['mas', '☰', 'Más', '/mas']];
 
 const main = document.getElementById('main');
 const nav = document.getElementById('nav');

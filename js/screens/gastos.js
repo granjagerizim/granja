@@ -1,7 +1,7 @@
 // Gastos: lista con filtros, resumen por categoría y formulario.
 import * as S from '../store.js';
 import * as L from '../logic.js';
-import { COLOR_SOCIO, SOCIOS } from '../config.js';
+import { COLOR_SOCIO, SOCIOS, REPARTO_SOCIEDAD } from '../config.js';
 import { h, pagina, tarjeta, filaLista, ir, vacio, fab, formulario, aviso, chip } from '../ui.js';
 
 export async function gastos() {
@@ -14,11 +14,11 @@ export async function gastos() {
     const b = L.balance(todos, ing);
     const hayIngresos = b.totalIngresos > 0;
     cuerpo.append(tarjeta('Inversión en la granja',
-      h('div', { class: 'grande' }, L.dinero(b.total)),
-      hayIngresos ? h('small', {}, `Gastos · Ingresos ${L.dinero(b.totalIngresos)} · Neto ${L.dinero(b.neto)}`) : null,
+      h('small', {}, 'Total gastado'), h('div', { class: 'grande' }, L.dinero(b.total)),
+      hayIngresos ? h('div', { class: 'lineas' }, h('div', {}, `Ingresos de la sociedad: ${L.dinero(b.totalIngresos)}`), h('div', {}, `Balance (gastos − ingresos): ${L.dinero(b.neto)}`)) : null,
       h('div', { class: 'socios' }, b.filas.map(f => h('div', { class: 'socio', style: `--c:${COLOR_SOCIO[f.socio]}` },
         h('span', { class: 'socio-nombre' }, f.socio), h('b', {}, L.dinero(f.pagado)),
-        h('small', {}, hayIngresos ? `cobró ${L.dinero(f.cobrado)}` : (b.total ? Math.round(f.pagado / b.total * 1000) / 10 + '% del total' : ''))))),
+        h('small', {}, b.total ? Math.round(f.pagado / b.total * 1000) / 10 + '% del total' : '')))),
       b.deuda ? h('div', { class: 'deuda' }, `${b.deuda.de} le debe ${L.dinero(b.deuda.monto)} a ${b.deuda.a}`) : h('div', { class: 'deuda ok' }, 'Están a mano'),
       b.sinSocio > 0 ? h('div', { class: 'error' }, `⚠ Hay ${L.dinero(b.sinSocio)} sin socio asignado`) : null,
       h('button', { class: 'btn', onclick: () => { verCategorias = !verCategorias; dibujar(); } }, verCategorias ? 'Ocultar categorías' : 'Ver por categoría')));
@@ -38,7 +38,7 @@ export async function gastos() {
     if (!lista.length) cuerpo.append(vacio('No hay gastos que mostrar.'));
     cuerpo.append(...lista.slice(0, 300).map(g => filaLista({
       titulo: g.descripcion || '(sin descripción)', sub: [L.fechaCorta(g.fecha), L.categoriaGasto(g)].filter(Boolean).join(' · '),
-      derecha: L.dinero(L.num(g.monto)), subDerecha: g.quien, color: COLOR_SOCIO[g.quien], onclick: () => ir('/gastos/' + g.id) })));
+      derecha: L.dinero(L.num(g.monto)), subDerecha: g.quien === REPARTO_SOCIEDAD ? 'Sociedad' : g.quien, color: COLOR_SOCIO[g.quien], onclick: () => ir('/gastos/' + g.id) })));
     if (lista.length > 300) cuerpo.append(vacio(`Se muestran 300 de ${lista.length}. Usa el buscador.`));
   };
   dibujar();
@@ -48,7 +48,16 @@ export async function gastos() {
 export async function gastoForm(id) {
   const rec = id === 'nuevo' ? null : await S.uno('gastos', id);
   const form = await formulario('gastos', rec, {
-    alGuardar: async r => { await S.guardar('gastos', r); aviso('Gasto guardado'); ir('/gastos'); },
+    vistaPrevia: { descripcion: r => {
+      if (!r.descripcion) return null;
+      const auto = L.categoriaGasto({ descripcion: r.descripcion });
+      if (r.categoria && r.categoria !== auto) return null;   // si la cambió a mano, no se muestra la sugerencia
+      return { texto: `Categoría sugerida: ${auto}`, clase: 'verde' };
+    },
+    },
+    autoCampo: { k: 'categoria', desde: r => (r.descripcion ? L.categoriaGasto({ descripcion: r.descripcion }) : '') },
+    alGuardar: async r => { if (r.categoria === L.categoriaGasto({ descripcion: r.descripcion })) r.categoria = '';   // si coincide con la automática, se deja automática
+      await S.guardar('gastos', r); aviso('Gasto guardado'); ir('/gastos'); },
     alEliminar: async () => { await S.borrar('gastos', id); aviso('Gasto eliminado'); ir('/gastos'); },
     alCancelar: () => history.back(),
   });

@@ -1,6 +1,6 @@
 // Cálculos de la app (funciones puras, sin acceso a pantalla ni a datos locales).
 // Reproducen la lógica del libro de Excel. Se prueban en tests/logica.test.mjs.
-import { SOCIOS, PARTES, CLAVES, CATEGORIAS_GASTO, GESTACION_DIAS, AVISO_SANIDAD_DIAS } from './config.js';
+import { SOCIOS, PARTES, REPARTO_SOCIEDAD, CLAVES, CATEGORIAS_GASTO, GESTACION_DIAS, AVISO_SANIDAD_DIAS } from './config.js';
 
 // ---------- utilidades de fecha (fechas como texto 'AAAA-MM-DD') ----------
 export const num = v => { const n = parseFloat(String(v ?? '').replace(',', '.')); return isFinite(n) ? n : 0; };
@@ -35,27 +35,24 @@ export function categoriaGasto(g) {
   for (const [p, c] of CLAVES_N) if (p && d.includes(p)) return c;
   return 'Otros';
 }
-// Parte de un ingreso que le corresponde a un socio: mitad y mitad (sociedad) o todo para uno ("Solo Omar")
-export const parteIngreso = (i, socio) => {
-  const r = String(i.reparto || '');
-  return r.startsWith('Solo ') ? (r === 'Solo ' + socio ? 1 : 0) : PARTES[socio];
-};
-
-// Balance entre socios. Los gastos los pagó un socio; los ingresos los cobró un socio.
-// Cada socio aportó (lo que pagó − lo que cobró); lo justo es que cada uno aporte su parte del neto.
+// Gastos: los paga un socio, o "Sociedad (mitad y mitad)" (dinero común: se suma mitad a cada socio).
+// Ingresos: todos son de la sociedad; no generan deuda entre socios.
+// Cada socio aportó lo que pagó (más su mitad de los gastos en sociedad); lo justo es que cada uno aporte su parte del total.
 export function balance(gastos, ingresos = []) {
   const gs = gastos.filter(g => !g.deleted), is = ingresos.filter(i => !i.deleted);
   const total = gs.reduce((s, g) => s + num(g.monto), 0);
   const totalIngresos = is.reduce((s, i) => s + num(i.monto), 0);
   const neto = total - totalIngresos;
-  const pagado = Object.fromEntries(SOCIOS.map(s => [s, 0])), cobrado = Object.fromEntries(SOCIOS.map(s => [s, 0]));
+  const propio = Object.fromEntries(SOCIOS.map(s => [s, 0])), enSociedad = Object.fromEntries(SOCIOS.map(s => [s, 0]));
   let sinSocio = 0;
-  for (const g of gs) { if (g.quien in pagado) pagado[g.quien] += num(g.monto); else sinSocio += num(g.monto); }
-  for (const i of is) { if (i.quien in cobrado) cobrado[i.quien] += num(i.monto); }
+  for (const g of gs) {
+    if (g.quien === REPARTO_SOCIEDAD) for (const s of SOCIOS) enSociedad[s] += num(g.monto) * PARTES[s];
+    else if (g.quien in propio) propio[g.quien] += num(g.monto);
+    else sinSocio += num(g.monto);
+  }
   const filas = SOCIOS.map(s => {
-    const aporte = pagado[s] - cobrado[s];
-    const corresponde = total * PARTES[s] - is.reduce((t, i) => t + num(i.monto) * parteIngreso(i, s), 0);   // su parte de los gastos menos su parte de los ingresos
-    return { socio: s, pagado: pagado[s], cobrado: cobrado[s], aporte, corresponde, diferencia: aporte - corresponde };
+    const pagado = propio[s] + enSociedad[s], corresponde = total * PARTES[s];
+    return { socio: s, pagado, propio: propio[s], enSociedad: enSociedad[s], corresponde, diferencia: pagado - corresponde };
   });
   // quien tiene diferencia negativa le debe a quien tiene positiva (con 2 socios, es una sola deuda)
   const deudor = filas.reduce((a, b) => (b.diferencia < a.diferencia ? b : a));
@@ -70,7 +67,6 @@ export function ingresosPorCategoria(ingresos) {
     const c = i.categoria || 'Otros ingresos';
     if (!m.has(c)) m.set(c, { cat: c, total: 0, n: 0, porSocio: Object.fromEntries(SOCIOS.map(s => [s, 0])) });
     const e = m.get(c); e.total += num(i.monto); e.n++;
-    if (i.quien in e.porSocio) e.porSocio[i.quien] += num(i.monto);
   }
   return [...m.values()].sort((a, b) => b.total - a.total);
 }
@@ -81,7 +77,7 @@ export function gastosPorCategoria(gastos) {
     const c = categoriaGasto(g);
     if (!m.has(c)) m.set(c, { cat: c, total: 0, n: 0, porSocio: Object.fromEntries(SOCIOS.map(s => [s, 0])) });
     const e = m.get(c); e.total += num(g.monto); e.n++;
-    if (g.quien in e.porSocio) e.porSocio[g.quien] += num(g.monto);
+    if (g.quien === REPARTO_SOCIEDAD) for (const s of SOCIOS) e.porSocio[s] += num(g.monto) * PARTES[s]; else if (g.quien in e.porSocio) e.porSocio[g.quien] += num(g.monto);
   }
   return [...m.values()].filter(e => e.n > 0).sort((a, b) => b.total - a.total);   // sort estable: empates en orden de la lista
 }

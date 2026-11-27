@@ -1,7 +1,7 @@
 // Animales: lista, ficha con resumen e historial, y formulario.
 import * as S from '../store.js';
 import * as L from '../logic.js';
-import { TABLAS } from '../config.js';
+import { TABLAS, LISTAS } from '../config.js';
 import * as F from '../fotos.js';
 import { tarjetaFotos } from './fotos.js';
 import { h, pagina, tarjeta, filaLista, ir, vacio, fab, formulario, aviso, chip, claseEstado } from '../ui.js';
@@ -11,31 +11,51 @@ export async function animales() {
   const perfiles = F.miniaturasPerfil(an, fotos);
   const alertas = new Map();
   for (const e of L.alertasSanidad(L.estadosSanidad(san, an))) alertas.set(String(e.rec.animal), (alertas.get(String(e.rec.animal)) || 0) + (e.estado === 'Vencida' ? 1 : 0.001));
-  let soloActivos = true, propFiltro = '';
-  const propietarios = [...new Set(an.filter(a => !a.deleted && a.propietario).map(a => a.propietario))].sort((a, b) => a.localeCompare(b, 'es'));
-  const cuerpo = h('div');
+  const SOC = 'Sociedad Omar y Kirwuin';
+  const esSoc = a => !a.propietario || a.propietario === SOC;
+  const todosA = an.filter(a => !a.deleted);
+  const cuenta = { activos: todosA.filter(L.activo).length, sociedad: todosA.filter(a => L.activo(a) && esSoc(a)).length, terceros: todosA.filter(a => L.activo(a) && !esSoc(a)).length, inactivos: todosA.filter(a => !L.activo(a)).length };
+  let vista = 'lista', filtro = 'activos';     // vista: lista | propietario | categoria · filtro: activos | sociedad | terceros | inactivos
+  const NOMBRE = { activos: 'activos', sociedad: 'de la sociedad', terceros: 'de terceros', inactivos: 'vendidos o dados de baja' };
+  const resumen = h('div', { class: 'resumen3' });
+  const cuerpo = h('div', { class: 'pagina-int' });
+  const pintarResumen = () => {
+    resumen.classList.toggle('cuatro', cuenta.inactivos > 0);
+    resumen.replaceChildren(...[['activos', 'Activos', 'verde'], ['sociedad', 'Sociedad', 'neutro'], ['terceros', 'De terceros', 'neutro'], ['inactivos', 'Inactivos', 'gris']].filter(([k]) => k !== 'inactivos' || cuenta.inactivos > 0).map(([k, t, c]) =>
+      h('button', { class: 'num3 ' + c + (filtro === k ? ' activo' : ''), 'aria-pressed': String(filtro === k), onclick: () => { filtro = k; dibujar(); } }, h('b', {}, cuenta[k]), h('span', {}, t))));
+    resumen.classList.toggle('filtrando', filtro !== 'activos');
+  };
+  const fila = (a, conProp = true) => {
+    const r = L.estadoRepro(a, repro);
+    const al = alertas.get(String(a.arete));
+    return filaLista({
+      titulo: L.etiquetaAnimal(a.arete, an), imagen: perfiles.get(String(a.arete)),
+      sub: [a.categoria, conProp && !esSoc(a) ? '👤 ' + a.propietario : '', a.raza, L.edadTexto(a.fechaNac), L.activo(a) ? '' : a.estado].filter(Boolean).join(' · '),
+      derecha: h('span', {}, r.estado && r.estado !== 'Sin datos' ? chip(r.estado, claseEstado(r.estado)) : null, al >= 1 ? chip('⚠ vacuna', 'rojo') : null),
+      onclick: () => ir('/animales/' + a.id) });
+  };
   const dibujar = () => {
-    cuerpo.replaceChildren();
-    cuerpo.append(h('div', { class: 'filtros' },
-      h('button', { class: 'chip-btn' + (soloActivos ? ' activo' : ''), onclick: () => { soloActivos = true; dibujar(); } }, 'Activos'),
-      h('button', { class: 'chip-btn' + (!soloActivos ? ' activo' : ''), onclick: () => { soloActivos = false; dibujar(); } }, 'Todos')));
-    if (propietarios.length > 1) cuerpo.append(h('div', { class: 'filtros' },
-      h('button', { class: 'chip-btn' + (!propFiltro ? ' activo' : ''), onclick: () => { propFiltro = ''; dibujar(); } }, 'De todos'),
-      ...propietarios.map(p => h('button', { class: 'chip-btn' + (propFiltro === p ? ' activo' : ''), onclick: () => { propFiltro = p; dibujar(); } }, p))));
-    const lista = an.filter(a => !soloActivos || L.activo(a)).filter(a => !propFiltro || a.propietario === propFiltro).sort((a, b) => String(a.arete).localeCompare(String(b.arete), 'es', { numeric: true }));
-    if (!lista.length) cuerpo.append(vacio('Aún no hay animales. Toca + para registrar el primero.'));
-    cuerpo.append(...lista.map(a => {
-      const r = L.estadoRepro(a, repro);
-      const al = alertas.get(String(a.arete));
-      return filaLista({
-        titulo: L.etiquetaAnimal(a.arete, an), imagen: perfiles.get(String(a.arete)),
-        sub: [a.categoria, a.propietario && a.propietario !== 'Sociedad Omar y Kirwuin' ? '👤 ' + a.propietario : '', a.raza, L.edadTexto(a.fechaNac), L.activo(a) ? '' : a.estado].filter(Boolean).join(' · '),
-        derecha: h('span', {}, r.estado && r.estado !== 'Sin datos' ? chip(r.estado, claseEstado(r.estado)) : null, al >= 1 ? chip('⚠ vacuna', 'rojo') : null),
-        onclick: () => ir('/animales/' + a.id) });
+    pintarResumen();
+    cuerpo.replaceChildren(h('div', { class: 'filtros' }, ...[['lista', 'Lista'], ['propietario', 'Por propietario'], ['categoria', 'Por categoría']].map(([k, t]) =>
+      h('button', { class: 'chip-btn' + (vista === k ? ' activo' : ''), onclick: () => { vista = k; dibujar(); } }, t))));
+    if (filtro !== 'activos') cuerpo.append(h('div', { class: 'aviso-filtro' }, h('span', {}, `Mostrando solo: ${NOMBRE[filtro]} (${cuenta[filtro]})`), h('button', { class: 'chip-btn', onclick: () => { filtro = 'activos'; dibujar(); } }, 'Quitar filtro ✕')));
+    const lista = todosA.filter(a => filtro === 'inactivos' ? !L.activo(a) : L.activo(a) && (filtro === 'activos' || (filtro === 'sociedad') === esSoc(a)))
+      .sort((a, b) => String(a.arete).localeCompare(String(b.arete), 'es', { numeric: true }));
+    if (!lista.length) { cuerpo.append(vacio(todosA.length ? 'No hay animales en este grupo.' : 'Aún no hay animales. Toca + para registrar el primero.')); return; }
+    if (vista === 'lista') { cuerpo.append(...lista.map(a => fila(a))); return; }
+    const grupos = new Map();
+    for (const a of lista) { const k = vista === 'propietario' ? (esSoc(a) ? SOC : a.propietario) : (a.categoria || 'Sin categoría'); if (!grupos.has(k)) grupos.set(k, []); grupos.get(k).push(a); }
+    const orden = [...grupos.keys()].sort((x, y) => vista === 'propietario' ? (x === SOC ? -1 : y === SOC ? 1 : x.localeCompare(y, 'es')) : LISTAS.categoriaAnimal.indexOf(x) - LISTAS.categoriaAnimal.indexOf(y));
+    cuerpo.append(...orden.map(k => {
+      const es = grupos.get(k), venc = es.filter(a => alertas.get(String(a.arete)) >= 1).length, prenadas = es.filter(a => L.estadoRepro(a, repro).estado === 'Preñada').length;
+      return h('details', { class: 'grupo-san', open: orden.length <= 2 ? true : null },
+        h('summary', {}, h('div', { class: 'grupo-cab' }, h('span', { class: 'grupo-tit' }, k), h('small', {}, `${es.length} animal${es.length > 1 ? 'es' : ''}`)),
+          h('div', { class: 'chips-res' }, venc ? chip(`${venc} con vacuna vencida`, 'rojo') : null, prenadas ? chip(`${prenadas} preñada${prenadas > 1 ? 's' : ''}`, 'verde') : null)),
+        ...es.map(a => fila(a, vista !== 'propietario')));
     }));
   };
   dibujar();
-  return pagina('Animales', { atras: '/mas' }, cuerpo, fab('Nuevo animal', () => ir('/animales/nuevo')));
+  return pagina('Animales', { atras: '/mas' }, resumen, cuerpo, fab('Nuevo animal', () => ir('/animales/nuevo')));
 }
 
 export async function animalFicha(id, query = {}) {
@@ -66,7 +86,7 @@ export async function animalFicha(id, query = {}) {
 
   const lecheT = a.sexo === 'Hembra' && lr.total30 ? tarjeta('Leche (30 días)', dato('Total', lr.total30.toFixed(1) + ' L'), dato('Promedio por día', lr.promedio.toFixed(1) + ' L')) : null;
 
-  const sanT = tarjeta(`Sanidad (${est.length} aplicaciones)`,
+  const sanT = tarjeta(`Salud (${est.length} aplicaciones)`,
     est.length ? gruposSanidad(est).map(g => h('details', { class: 'grupo-san' },
       h('summary', {},
         h('div', { class: 'grupo-cab' },

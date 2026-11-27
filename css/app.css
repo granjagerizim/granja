@@ -148,3 +148,5 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #7fb77e; border-c
 .vista-previa { font-size: 13px; font-weight: 600; padding: 8px 10px; border-radius: 8px; margin-top: 2px; }
 .vista-previa.rojo { background: var(--rojo-bg); color: var(--rojo); } .vista-previa.ambar { background: var(--ambar-bg); color: var(--ambar); } .vista-previa.verde { background: var(--ok-bg); color: var(--ok); }
 .vista-previa.oculto { display: none; }
+.num3.neutro { background: var(--verde-claro); color: var(--verde); border: 1px solid var(--borde); }
+.lineas { font-size: 14px; color: var(--suave); display: flex; flex-direction: column; gap: 2px; } .lineas div:last-child { font-weight: 700; color: var(--texto); }

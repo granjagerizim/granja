@@ -6,12 +6,12 @@
 // ============================================================================
 
 export const REPITE = { si: 'Sí, se repite', no: 'No, es único' };   // respuesta a "¿Se repite?" en Sanidad
-export const APP = { nombre: 'Granja', version: '1.6.0' };
+export const APP = { nombre: 'Granja', version: '1.7.0' };
 
 // Socios y reparto de gastos (deben sumar 1). Los nombres deben coincidir con los de la hoja.
 export const SOCIOS = ['Omar', 'Kirwuin'];
 export const PARTES = { Omar: 0.5, Kirwuin: 0.5 };
-export const COLOR_SOCIO = { Omar: '#2e7d32', Kirwuin: '#c62828' };   // verde / rojo
+export const COLOR_SOCIO = { Omar: '#2e7d32', Kirwuin: '#c62828', Sociedad: '#1565c0' };   // verde / rojo
 
 // Parámetros del hato
 export const GESTACION_DIAS = 283;      // días de gestación para calcular el parto probable
@@ -33,7 +33,7 @@ export const LISTAS = {
 
 // Categorías de gastos. El orden de CLAVES importa: gana la primera palabra que aparezca en la descripción.
 // Si ninguna coincide, el gasto queda en "Otros". (Se ignoran mayúsculas y tildes.)
-export const CATEGORIAS_GASTO = ["Compra de la granja", "Gestión y comisiones", "Mano de obra", "Maquinaria y arado", "Servicios básicos", "Construcción e infraestructura", "Siembra y cultivos", "Riego y agua", "Animales y alimento", "Herramientas y dotación", "Otros"];
+export const CATEGORIAS_GASTO = ["Compra de la granja", "Gestión y comisiones", "Mano de obra", "Maquinaria y arado", "Servicios básicos", "Construcción e infraestructura", "Siembra y cultivos", "Riego y agua", "Animales y alimento", "Herramientas y dotación", "Salud animal", "Transporte", "Otros"];
 
 // Tipos de ingreso (se puede escribir uno nuevo desde el formulario con "Otro")
 // A quién pertenece un ingreso: por defecto a la sociedad (mitad y mitad); a veces es de un solo socio
@@ -134,7 +134,112 @@ export const CLAVES = [
   ["platera", "Herramientas y dotación"],
   ["banquito", "Herramientas y dotación"],
   ["gancho", "Herramientas y dotación"],
-  ["alambre", "Herramientas y dotación"]
+  ["alambre", "Herramientas y dotación"],
+  ["flete", "Transporte"],
+  ["transporte", "Transporte"],
+  ["camion", "Transporte"],
+  ["acarreo", "Transporte"],
+  ["traslado", "Transporte"],
+  ["peaje", "Transporte"],
+  ["pasaje", "Transporte"],
+  ["viaje", "Transporte"],
+  ["vacuna", "Salud animal"],
+  ["desparasit", "Salud animal"],
+  ["ivermectina", "Salud animal"],
+  ["antibiotico", "Salud animal"],
+  ["veterinari", "Salud animal"],
+  ["medicamento", "Salud animal"],
+  ["remedio", "Salud animal"],
+  ["vitamina", "Salud animal"],
+  ["inyecci", "Salud animal"],
+  ["jeringa", "Salud animal"],
+  ["curacion", "Salud animal"],
+  ["tractor", "Maquinaria y arado"],
+  ["combustible", "Maquinaria y arado"],
+  ["bencina", "Maquinaria y arado"],
+  ["diesel", "Maquinaria y arado"],
+  ["petroleo", "Maquinaria y arado"],
+  ["gasolina", "Maquinaria y arado"],
+  ["aceite", "Maquinaria y arado"],
+  ["sal mineral", "Animales y alimento"],
+  ["salmineral", "Animales y alimento"],
+  ["concentrado", "Animales y alimento"],
+  ["balanceado", "Animales y alimento"],
+  ["forraje", "Animales y alimento"],
+  ["heno", "Animales y alimento"],
+  ["melaza", "Animales y alimento"],
+  ["afrecho", "Animales y alimento"],
+  ["pasto", "Animales y alimento"],
+  ["suplemento", "Animales y alimento"],
+  ["ternero", "Animales y alimento"],
+  ["becerro", "Animales y alimento"],
+  ["becerra", "Animales y alimento"],
+  ["vaca", "Animales y alimento"],
+  ["toro", "Animales y alimento"],
+  ["ganado", "Animales y alimento"],
+  ["animal", "Animales y alimento"],
+  ["bovino", "Animales y alimento"],
+  ["cerco", "Construcción e infraestructura"],
+  ["estaca", "Construcción e infraestructura"],
+  ["madera", "Construcción e infraestructura"],
+  ["tabla", "Construcción e infraestructura"],
+  ["clavo", "Construcción e infraestructura"],
+  ["puerta", "Construcción e infraestructura"],
+  ["techo", "Construcción e infraestructura"],
+  ["zinc", "Construcción e infraestructura"],
+  ["fierro", "Construcción e infraestructura"],
+  ["malla", "Construcción e infraestructura"],
+  ["comedero", "Construcción e infraestructura"],
+  ["bebedero", "Construcción e infraestructura"],
+  ["tanque", "Riego y agua"],
+  ["estanque", "Riego y agua"],
+  ["caneria", "Riego y agua"],
+  ["pvc", "Riego y agua"],
+  ["fertiliz", "Siembra y cultivos"],
+  ["abono", "Siembra y cultivos"],
+  ["urea", "Siembra y cultivos"],
+  ["herbicida", "Siembra y cultivos"],
+  ["fungicida", "Siembra y cultivos"],
+  ["siembra", "Siembra y cultivos"],
+  ["sembrar", "Siembra y cultivos"],
+  ["electricidad", "Servicios básicos"],
+  ["internet", "Servicios básicos"],
+  ["celular", "Servicios básicos"],
+  ["telefono", "Servicios básicos"],
+  ["recarga", "Servicios básicos"],
+  ["peon", "Mano de obra"],
+  ["jornal", "Mano de obra"],
+  ["sueldo", "Mano de obra"],
+  ["salario", "Mano de obra"],
+  ["capataz", "Mano de obra"],
+  ["cuidador", "Mano de obra"],
+  ["mano de obra", "Mano de obra"],
+  ["machete", "Herramientas y dotación"],
+  ["hacha", "Herramientas y dotación"],
+  ["azadon", "Herramientas y dotación"],
+  ["rastrillo", "Herramientas y dotación"],
+  ["balde", "Herramientas y dotación"],
+  ["cubeta", "Herramientas y dotación"],
+  ["cuerda", "Herramientas y dotación"],
+  ["soga", "Herramientas y dotación"],
+  ["cadena", "Herramientas y dotación"],
+  ["candado", "Herramientas y dotación"],
+  ["linterna", "Herramientas y dotación"],
+  ["motosierra", "Herramientas y dotación"],
+  ["guadana", "Herramientas y dotación"],
+  ["botas", "Herramientas y dotación"],
+  ["guantes", "Herramientas y dotación"],
+  ["overol", "Herramientas y dotación"],
+  ["comision", "Gestión y comisiones"],
+  ["notaria", "Gestión y comisiones"],
+  ["notario", "Gestión y comisiones"],
+  ["contador", "Gestión y comisiones"],
+  ["abogado", "Gestión y comisiones"],
+  ["patente", "Gestión y comisiones"],
+  ["permiso", "Gestión y comisiones"],
+  ["impuesto", "Gestión y comisiones"],
+  ["seguro", "Gestión y comisiones"],
+  ["inscripcion", "Gestión y comisiones"]
 ];
 
 // ----------------------------------------------------------------------------
@@ -148,10 +253,10 @@ export const TABLAS = {
     etiqueta: 'Gasto', plural: 'Gastos',
     campos: [
       { k: 'fecha', label: 'Fecha', tipo: 'fecha', defecto: 'hoy' },
-      { k: 'quien', label: 'Quién pagó', tipo: 'lista', opciones: SOCIOS, req: true },
+      { k: 'quien', label: 'Quién pagó', tipo: 'lista', opciones: [...SOCIOS, REPARTO_SOCIEDAD], req: true, ayuda: 'Elige "Sociedad (mitad y mitad)" si se pagó con dinero común: se suma mitad a Omar y mitad a Kirwuin.' },
       { k: 'monto', label: 'Monto ($)', tipo: 'numero', req: true },
-      { k: 'descripcion', label: 'Descripción', tipo: 'texto', req: true, ayuda: 'La categoría se asigna sola según lo que escribas.' },
-      { k: 'categoria', label: 'Categoría (solo si quieres forzarla)', tipo: 'lista', opciones: [...CATEGORIAS_GASTO], opcional: true },
+      { k: 'descripcion', label: 'Descripción', tipo: 'texto', req: true },
+      { k: 'categoria', label: 'Categoría', ayuda: 'Se elige sola según la descripción; cámbiala si no es la correcta.', tipo: 'lista', opciones: [...CATEGORIAS_GASTO], opcional: true },
       { k: 'notas', label: 'Notas', tipo: 'notas' },
     ],
   },
@@ -159,9 +264,7 @@ export const TABLAS = {
     etiqueta: 'Ingreso', plural: 'Ingresos',
     campos: [
       { k: 'fecha', label: 'Fecha', tipo: 'fecha', defecto: 'hoy' },
-      { k: 'quien', label: 'Quién cobró', tipo: 'lista', opciones: SOCIOS, req: true, ayuda: 'El socio que recibió el dinero. Cuenta para saber quién le debe a quién.' },
       { k: 'monto', label: 'Monto ($)', tipo: 'numero', req: true },
-      { k: 'reparto', label: 'A quién corresponde', tipo: 'lista', opciones: REPARTOS, defecto: REPARTO_SOCIEDAD, req: true, ayuda: 'Normalmente es de la sociedad (mitad y mitad). Elige "Solo …" si es el dinero de un solo socio.' },
       { k: 'categoria', label: 'Tipo de ingreso', tipo: 'lista', opciones: [...CATEGORIAS_INGRESO], req: true, libre: true },
       { k: 'descripcion', label: 'Descripción', tipo: 'texto', req: true, ayuda: 'Por ejemplo: "venta de 2 becerros" o "leche de la semana".' },
       { k: 'animal', label: 'Animal vendido (opcional)', tipo: 'animal', visibleSi: r => r.categoria === 'Venta de ganado', ayuda: 'Si eliges uno, queda marcado como Vendido en su ficha.' },
@@ -219,7 +322,7 @@ export const TABLAS = {
     ],
   },
   sanidad: {
-    etiqueta: 'Aplicación', plural: 'Sanidad',
+    etiqueta: 'Aplicación', plural: 'Salud',
     campos: [
       { k: 'fecha', label: 'Fecha', tipo: 'fecha', defecto: 'hoy', req: true },
       { k: 'animal', label: 'Animal', tipo: 'animal', req: true },

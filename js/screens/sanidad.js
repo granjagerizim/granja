@@ -106,7 +106,7 @@ export async function sanidad() {
     }
   };
   dibujar();
-  return pagina('Sanidad', {}, resumen, cuerpo, fab('Nueva aplicación', () => ir('/sanidad/nuevo')));
+  return pagina('Salud', {}, resumen, cuerpo, fab('Nueva aplicación', () => ir('/sanidad/nuevo')));
 }
 
 export async function sanidadForm(id, query = {}) {
